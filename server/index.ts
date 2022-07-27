@@ -1,36 +1,15 @@
-import Express from 'express';
-import { PrismaClient } from '@prisma/client';
+import Express, { json } from 'express';
+import controllers from './controllers';
+import { router } from './routers';
+import cors from 'cors';
 
 const app = Express();
-const PORT = 3001;
+
+const PORT = 3000;
+
+app.use(cors());
+app.use(Express.json());
+app.use(router);
 app.listen(PORT, () => {
-  console.log(`Listening on http://localhost:${PORT}`);
+  // console.log(`Listening on http://localhost:${PORT}`);
 });
-
-const prisma = new PrismaClient();
-
-async function main() {
-  try {
-    await prisma.user.create({
-      data: {
-        email: 'alice@prisma3.io',
-        password: 'contra',
-      },
-    });
-  } catch (e) {
-    console.log(e);
-  }
-
-  const allUsers = await prisma.user.findMany();
-  console.dir(allUsers, { depth: null });
-}
-
-main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
