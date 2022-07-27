@@ -8,3 +8,29 @@ app.listen(PORT, () => {
 });
 
 const prisma = new PrismaClient();
+
+async function main() {
+  try {
+    await prisma.user.create({
+      data: {
+        email: 'alice@prisma3.io',
+        password: 'contra',
+      },
+    });
+  } catch (e) {
+    console.log(e);
+  }
+
+  const allUsers = await prisma.user.findMany();
+  console.dir(allUsers, { depth: null });
+}
+
+main()
+  .then(async () => {
+    await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });
