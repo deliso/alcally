@@ -1,14 +1,14 @@
 {
-  "include": ["server"],
+  "include": ["./"],
   "compilerOptions": {
     "module": "commonjs",
     "esModuleInterop": true,
-    "target": "es2020",
+    "target": "ES2020",
     "moduleResolution": "node",
-    "outDir": "build",
+    "outDir": "dist",
     "noImplicitAny": true,
     "strict": true,
     "resolveJsonModule": true
   },
-  "lib": ["es2021"]
+  "lib": ["es6"]
 }

@@ -1,7 +1,7 @@
-import Express from 'express';
+const Express = require('express');
 
-const app = new Express();
-const PORT = 3000;
+const app = Express();
+const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Listening on http://localhost:${PORT}`);
 });
