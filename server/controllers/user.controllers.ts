@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { User } from './types';
+import { User } from '../types/user.types';
 import { Request, Response } from 'express';
 
 const prisma = new PrismaClient();
@@ -12,14 +12,13 @@ const user = async (req: Request, res: Response) => {
     });
     res.status(201);
     res.end('ok');
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    console.log(error);
   }
 };
 
 const getUsers = async (req: Request, res: Response) => {
   const allUsers: User[] = await prisma.user.findMany();
-  console.log(allUsers);
   res.send(allUsers);
 };
 

@@ -1,6 +1,5 @@
-import Express, { json } from 'express';
-import controllers from './controllers';
-import { router } from './routers';
+import Express from 'express';
+import { router } from './routers/user.routers';
 import cors from 'cors';
 
 const app = Express();
