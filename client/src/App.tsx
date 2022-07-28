@@ -1,11 +1,11 @@
 import React from 'react';
-import CompanyPage from './Pages/CompanyPage/CompanyPage';
+import { CompanySelection } from './Pages/CompanyPage/CompanySelection';
 import './App.css';
 
 function App() {
   return (
     <div className='App'>
-      <CompanyPage></CompanyPage>
+      <CompanySelection></CompanySelection>
     </div>
   );
 }
