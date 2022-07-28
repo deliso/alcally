@@ -7,29 +7,38 @@ class User {
 class Company {
   id!: number;
   name!: string;
+  type!: CompanyType;
   audit!: boolean;
-  end!: number;
+  year_end!: number;
   actions!: Action[];
 }
+
+type CompanyType = 'SA' | 'SL';
 
 class Action {
   constructor(
     id: number,
     due_date: number,
     name: string,
+    // company: Company,
+    // companyId: number,
     _requirements: keyof Company
   ) {
     this.id = id;
     this.due_date = due_date;
     this.name = name;
+    // this.company = company;
+    // this.companyId = companyId;
     this._requirements = _requirements;
     this._showAction;
   }
-  id!: number;
+  id?: number;
   due_date!: number;
   name!: string;
-  _requirements!: keyof Company;
-  _showAction(company: Company, _requirements: keyof Company) {
+  // company?: Company;
+  // companyId?: number;
+  _requirements?: keyof Company;
+  _showAction?(company: Company, _requirements: keyof Company) {
     if (company[_requirements]) {
       return true;
     } else return false;
