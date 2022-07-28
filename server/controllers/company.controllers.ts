@@ -35,14 +35,18 @@ const company = async (req: Request, res: Response) => {
   }
 };
 
-// const getCompanies = async (req: Request, res: Response) => {
-//   const allCompanies: Company[] = await prisma.company.findMany();
-//   res.send(allCompanies);
-// };
+const getCompanies = async (req: Request, res: Response) => {
+  const allCompanies: Company[] = await prisma.company.findMany({
+    include: {
+      actions: true,
+    },
+  });
+  res.send(allCompanies);
+};
 
 const deleteCompanies = async (req: Request, res: Response) => {
   await prisma.company.deleteMany({});
   res.send('Ok');
 };
 
-export default { company, deleteCompanies };
+export default { getCompanies, company, deleteCompanies };
