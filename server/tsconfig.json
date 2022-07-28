@@ -1,5 +1,5 @@
 {
-  "include": ["./", "controllers/", "./routers/"],
+  "include": ["./", "controllers/", "./routers/", "../types"],
   "compilerOptions": {
     "module": "commonjs",
     "esModuleInterop": true,

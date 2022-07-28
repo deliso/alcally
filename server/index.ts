@@ -5,7 +5,7 @@ import { companyRouter } from './routers/company.routers';
 
 const app = Express();
 
-const PORT = 3000;
+const PORT = 3001;
 
 app.use(cors());
 app.use(Express.json());

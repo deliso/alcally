@@ -1,4 +1,4 @@
-import { Company, Action } from './types/types';
+import { Company, Action } from '../types/types';
 
 const parseAction = (company: Company, action: Action): Action => {
   //Consider using if statement instead

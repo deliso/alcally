@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { Company, Action } from '../types/types';
+import { Company, Action } from '../../types/types';
 import { Request, Response } from 'express';
 import insertActions from '../utils';
 
