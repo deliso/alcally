@@ -6,6 +6,10 @@
   padding: 8px;
 }
 
+#company-select {
+  text-align: left;
+}
+
 .selector {
   width: 30vw;
 }
