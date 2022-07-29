@@ -7,15 +7,16 @@ type Props = {};
 
 const CompanyDashboard = (props: Props) => {
   const location = useLocation();
-  const state = location.state as Company;
-  const company = state;
+  const state = location.state as any;
+  const { company } = state;
+  const { name, actions } = company as Company;
   return (
     <div className='company-dashboard'>
       {company ? (
         <div>
-          <div>{company.name}</div>
+          <div>{name}</div>
           <div>
-            {company.actions.map((action: Action) => (
+            {actions.map((action: Action) => (
               <div key={action.id}>{action.name}</div>
             ))}
           </div>
