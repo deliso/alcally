@@ -13,32 +13,39 @@ type Props = {
 
 const CompanyCard = (props: Props) => {
   // const company = useContext(selectedCompany) as Company;
-  const company: Company = props.company;
+  const company = props.company;
+  console.log(company);
   const card = (
     <>
-      <CardContent>
-        <Typography variant='caption' color='text.secondary' gutterBottom>
-          Name
-        </Typography>
-        <Typography variant='h6' component='div'>
-          {company.name},{company.type}
-        </Typography>
-        <Typography variant='caption' color='text.secondary' gutterBottom>
-          NIF
-        </Typography>
-        <Typography variant='h6' component='div'>
-          {company.nif}
-        </Typography>
-        <Typography variant='caption' color='text.secondary' gutterBottom>
-          CNAE
-        </Typography>
-        <Typography variant='h6' component='div'>
-          {company.cnae}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size='small'>More Info</Button>
-      </CardActions>
+      {company ? (
+        <>
+          <CardContent>
+            <Typography variant='caption' color='text.secondary' gutterBottom>
+              Name
+            </Typography>
+            <Typography variant='h6' component='div'>
+              {company.name},{company.type}
+            </Typography>
+            <Typography variant='caption' color='text.secondary' gutterBottom>
+              NIF
+            </Typography>
+            <Typography variant='h6' component='div'>
+              {company.nif}
+            </Typography>
+            <Typography variant='caption' color='text.secondary' gutterBottom>
+              CNAE
+            </Typography>
+            <Typography variant='h6' component='div'>
+              {company.cnae}
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <Button size='small'>More Info</Button>
+          </CardActions>
+        </>
+      ) : (
+        ''
+      )}
     </>
   );
   return (
