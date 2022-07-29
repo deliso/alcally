@@ -35,13 +35,16 @@ export const CompanySelection = (props: Props) => {
     <div className='company-selection'>
       <CompanyContext.Provider value={selectedCompany}>
         <Box className='selector' sx={{ minWidth: 120 }}>
-          <FormControl fullWidth>
-            <InputLabel id='demo-simple-select-label'>
-              Select a Company
-            </InputLabel>
+          <FormControl
+            fullWidth
+            sx={{
+              '& .MuiOutlinedInput-notchedOutline': { borderStyle: 'none' },
+            }}
+          >
+            <InputLabel id='company-select-label'></InputLabel>
             <Select
-              labelId='demo-simple-select-label'
-              id='demo-simple-select'
+              labelId='company-select-label'
+              id='company-select'
               label='Company'
               onChange={handleChange}
               defaultValue={location.hash.slice(1)}
@@ -49,14 +52,12 @@ export const CompanySelection = (props: Props) => {
               {companies.map((company) => {
                 return (
                   <MenuItem id={company.name} value={company.id}>
-                    <CompanyContext.Provider
-                      value={[selectedCompany, setSelectedCompany]}
-                    >
+                    <CompanyContext.Provider value={selectedCompany}>
                       <Link
                         to={`/company/#${company.id}`}
                         state={{ company: company }}
                       >
-                        {company.name}
+                        {company.name}, {company.type}
                       </Link>
                     </CompanyContext.Provider>
                   </MenuItem>

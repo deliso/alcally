@@ -5,3 +5,16 @@
   align-items: center;
   justify-content: center;
 }
+.dashboard-container {
+  display: flex;
+  gap: 10rem;
+}
+
+.cards-container {
+  background-color: rgb(227, 228, 228);
+  padding: 16px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

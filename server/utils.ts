@@ -1,5 +1,22 @@
 import { Company, Action } from '../types/types';
 
+const actionArr: Action[] = [
+  {
+    id: 1,
+    due_date: 3,
+    name: 'Draw up annual accounts',
+    _requirements: 'name',
+    _showAction: Action.prototype._showAction,
+  },
+  {
+    id: 2,
+    due_date: 4,
+    name: 'Submit annual accounts for audit',
+    _requirements: 'audit',
+    _showAction: Action.prototype._showAction,
+  },
+];
+
 const parseAction = (company: Company, action: Action): Action => {
   //Consider using if statement instead
 
@@ -14,32 +31,6 @@ const parseAction = (company: Company, action: Action): Action => {
       delete action.id;
       return action;
   }
-};
-
-const actionArr: Action[] = [
-  {
-    id: 1,
-    due_date: 3,
-    name: 'Action 1',
-    _requirements: 'audit',
-    _showAction: Action.prototype._showAction,
-  },
-  {
-    id: 2,
-    due_date: 6,
-    name: 'Action 2',
-    _requirements: 'name',
-    _showAction: Action.prototype._showAction,
-  },
-];
-
-const company1: Company = {
-  id: 1,
-  name: 'Company 1',
-  type: 'SA',
-  audit: true,
-  year_end: 6,
-  actions: [],
 };
 
 const insertActions = (company: Company) => {
