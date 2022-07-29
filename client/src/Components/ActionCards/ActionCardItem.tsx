@@ -8,7 +8,7 @@ import { useContext } from 'react';
 import { Action, Company } from '../../../../types/types';
 
 type Props = {
-  key: number | undefined;
+  key: string | number | undefined;
   action: Action;
 };
 

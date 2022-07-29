@@ -21,7 +21,19 @@ const CompanyCard = (props: Props) => {
           Name
         </Typography>
         <Typography variant='h6' component='div'>
-          {company.name}
+          {company.name},{company.type}
+        </Typography>
+        <Typography variant='caption' color='text.secondary' gutterBottom>
+          NIF
+        </Typography>
+        <Typography variant='h6' component='div'>
+          {company.nif}
+        </Typography>
+        <Typography variant='caption' color='text.secondary' gutterBottom>
+          CNAE
+        </Typography>
+        <Typography variant='h6' component='div'>
+          {company.cnae}
         </Typography>
       </CardContent>
       <CardActions>

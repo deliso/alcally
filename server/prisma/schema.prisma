@@ -11,8 +11,8 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement()) 
-  email     String   @unique
+  id        String     @id @default(cuid()) 
+  email     String     @unique
   password  String
   // companies Company[]
   // name      String
@@ -20,41 +20,43 @@ model User {
 }
 
 model Company {
-  id        Int   @id @default(autoincrement()) 
-  name      String   @unique
-  type      Type
-  audit     Boolean
-  year_end  Int
-  actions   Action[]
+  id          String   @id @default(cuid()) 
+  name        String   @unique
+  type        Type
+  audit       Boolean
+  year_end    Int
+  actions     Action[] 
+  nif         String @unique
+  cnae        String
+  sole        Boolean
+  mgmt        Body
+  mgmt_rem    Boolean
   // user      User @relation(fields: [userId], references: [id])
   // userId    Int @unique
-  // nif       String @unique
-  // cnae      String
-  // sole      Boolean
   // incDate   DateTime
   // yearStart DateTime 
   // country   String
   // city      String
   // postcode  Int
   // city      String
-  // mgmt      String
   // mgmt_no   Int
   // persons   Person[]
 }
 
 model Action {
-  id           Int @id @default(autoincrement()) 
-  // createdAt DateTime @default(now())
-  // updatedAt DateTime @updatedAt
+  id           String @id @default(cuid()) 
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
   due_date      Int
   name          String
-  company       Company @relation(fields: [companyId], references: [id]) 
-  companyId     Int
-  // visible   Boolean  @default(true)
+  company       Company @relation(fields: [companyId], references: [id], onDelete: Cascade) 
+  companyId     String
+  completed     Boolean  @default(false)
+  hidden        Boolean  @default(false)
+  category  Category
+  frequency Frequency
   // title     String   @db.VarChar(255)
   // body      Body
-  // category  Category
-  // frequency Frequency
   // comments  String
 }
 
@@ -79,29 +81,29 @@ enum Type {
   SL
 }
 
-// enum Category {
-//   ACCOUNTS
-//   BOOKS
-//   REGISTRY
-// }
+enum Category {
+  ACCOUNTS
+  BOOKS
+  APPOINTMENT
+}
 
-// enum Frequency {
-//   DAILY
-//   WEEKLY
-//   MONTHLY
-//   QUARTERLY
-//   YEARLY
-// }
+enum Frequency {
+  DAILY
+  WEEKLY
+  MONTHLY
+  QUARTERLY
+  YEARLY
+}
 
-// enum Body {
-//   BOARD
-//   J_DIRECTORS
-//   J_S_DIRECTORS
-//   SOLE_DIRECTOR
-//   SHAREHOLDERS
-//   SOLE_SHAREHOLDER
-//   AUDITOR
-// }
+enum Body {
+  BOD
+  J_D
+  J_S_D
+  S_D
+  SH
+  S_SH
+  AU
+}
 
 // enum Role {
 //   CHAIRMAN
