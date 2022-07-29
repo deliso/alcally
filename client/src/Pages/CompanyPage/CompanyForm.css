@@ -1,19 +1,29 @@
+.form-modal {
+  width: 60vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding-top: 10vh;
+  overflow: scroll;
+}
 .form-container {
   width: 60vw;
-  height: 60vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 32px;
+  padding-top: 10vh;
+  overflow: scroll;
+}
+.helper {
   text-align: center;
 }
-.form-control {
-  width: fit-content;
-  height: fit-content;
+
+.button-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  justify-items: center;
+  height: 50vh;
+  align-items: flex-end;
 }

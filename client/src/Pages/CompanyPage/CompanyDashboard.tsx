@@ -41,9 +41,7 @@ const CompanyDashboard = (props: Props) => {
             </div>
             <div className='cards-container-border'>
               <Box className='company-card-container'>
-                <Item>
-                  <CompanyCard company={company}></CompanyCard>
-                </Item>
+                <CompanyCard company={company}></CompanyCard>
               </Box>
             </div>
           </div>
