@@ -3,6 +3,7 @@ import './CompanyDashboard.css';
 import { useLocation } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import ActionCardItem from '../../Components/ActionCards/ActionCardItem';
+import CompanyCard from '../../Components/CompanyCard/CompanyCard';
 
 type Props = {};
 
@@ -24,8 +25,8 @@ const CompanyDashboard = (props: Props) => {
                 ></ActionCardItem>
               ))}
             </Box>
-            <Box>
-              {name}, {type}
+            <Box className='cards-container'>
+              <CompanyCard company={company}></CompanyCard>
             </Box>
           </div>
         ) : (

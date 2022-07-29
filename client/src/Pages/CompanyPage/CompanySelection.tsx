@@ -38,10 +38,15 @@ export const CompanySelection = (props: Props) => {
           <FormControl
             fullWidth
             sx={{
-              '& .MuiOutlinedInput-notchedOutline': { borderStyle: 'none' },
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderStyle: 'none',
+              },
+              ' & .MuiInputLabel-shrink': {
+                color: 'transparent',
+              },
             }}
           >
-            <InputLabel id='company-select-label'></InputLabel>
+            <InputLabel id='company-select-label'>Select company</InputLabel>
             <Select
               labelId='company-select-label'
               id='company-select'
@@ -51,7 +56,7 @@ export const CompanySelection = (props: Props) => {
             >
               {companies.map((company) => {
                 return (
-                  <MenuItem id={company.name} value={company.id}>
+                  <MenuItem key={company.name} value={company.id}>
                     <CompanyContext.Provider value={selectedCompany}>
                       <Link
                         to={`/company/#${company.id}`}

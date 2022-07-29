@@ -12,6 +12,8 @@
 
 .cards-container {
   background-color: rgb(227, 228, 228);
+  height: 50vh;
+  width: 30vw;
   padding: 16px;
   border-radius: 4px;
   display: flex;
