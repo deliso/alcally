@@ -148,7 +148,6 @@ const insertActions = (company: Company) => {
 
 const sortActionsByDate = (actions: Action[]) => {
   const dt = DateTime;
-  // const currentTime = new Date(Date.now());
   actions.sort((a, b) => {
     const aTimestamp: number = dt.utc(a.due_year, a.due_month, a.due_day);
     const bTimestamp: number = dt.utc(b.due_year, b.due_month, b.due_day);

@@ -7,6 +7,7 @@ import CompanyCard from '../../Components/CompanyCard/CompanyCard';
 import { Grid, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
+const { DateTime } = require('luxon');
 
 type Props = {};
 
@@ -15,6 +16,24 @@ const CompanyDashboard = (props: Props) => {
   const state = location.state as any;
   const company: Company = state.company;
   const { actions } = company;
+  const dt = DateTime;
+  const currentTime = new Date(Date.now());
+  console.log();
+  const filteredActions = actions.filter((action) => {
+    console.log(
+      dt
+        .utc(action.due_year, action.due_month, action.due_day)
+        .toUnixInteger() -
+        dt.utc(currentTime).toUnixInteger() +
+        31705474
+    );
+    return (
+      dt
+        .utc(action.due_year, action.due_month, action.due_day)
+        .toUnixInteger() <
+      dt.utc(currentTime).toUnixInteger() + 31536000
+    );
+  });
   const Item = styled(Paper)(() => ({
     'background-color': 'transparent',
     height: '100%',
@@ -29,7 +48,7 @@ const CompanyDashboard = (props: Props) => {
           <div className='dashboard-container'>
             <div className='cards-container-border'>
               <Grid spacing={8} className='action-cards-container'>
-                {actions.map((action: Action) => (
+                {filteredActions.map((action: Action) => (
                   <Item>
                     <ActionCardItem
                       key={action.id}
