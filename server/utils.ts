@@ -140,16 +140,20 @@ const insertActions = (company: Company) => {
         datedAction.due_year = i;
         console.log(datedAction.due_year);
         company.actions.push({ ...datedAction });
+        sortActionsByDate(company.actions);
       }
     }
   });
 };
 
-// const filterActionsByDate = () => {
-//   const dt = DateTime;
-//   currentTime = new Date(Date.now())
-//   const
-//   dt.
-// };
+const sortActionsByDate = (actions: Action[]) => {
+  const dt = DateTime;
+  // const currentTime = new Date(Date.now());
+  actions.sort((a, b) => {
+    const aTimestamp: number = dt.utc(a.due_year, a.due_month, a.due_day);
+    const bTimestamp: number = dt.utc(b.due_year, b.due_month, b.due_day);
+    return aTimestamp - bTimestamp;
+  });
+};
 
 export default insertActions;

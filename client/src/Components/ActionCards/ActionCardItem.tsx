@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useContext } from 'react';
 import { Action, Company } from '../../../../types/types';
+const { DateTime } = require('luxon');
 
 type Props = {
   key: string | number | undefined;
@@ -13,13 +14,17 @@ type Props = {
 };
 
 const ActionCardItem = (props: Props) => {
+  const dt = DateTime;
   // const company = useContext(selectedCompany) as Company;
   const action: Action = props.action;
+  const dueDate: number = dt
+    .utc(action.due_year, action.due_month, action.due_day)
+    .toFormat('MMMM dd, yyyy');
   const card = (
     <>
       <CardContent>
         <Typography variant='caption' color='text.secondary' gutterBottom>
-          March 31, 2023
+          {dueDate}
         </Typography>
         <Typography variant='h6' component='div'>
           {action.name}
