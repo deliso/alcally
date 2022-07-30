@@ -16,68 +16,59 @@ import Button from '@mui/material/Button';
 import { useState } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { Company } from '../../../../types/types';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {};
 
-const pageMap: any = {
-  name: 'name',
-  type: 'type',
-  audit: 'audit',
-  year_end: 'year_end',
-  nif: 'nif',
-  cnae: 'cnae',
-  sole: 'sole',
-  mgmt: 'mgmt',
-  mgmt_rem: 'mgmt_rem',
-};
-
 const CompanyForm = (props: Props) => {
-  const [formPage, setFormPage] = useState(1);
   const [companyData, setCompanyData] = useState({
     name: '',
-    type: 'SL',
-    audit: false,
+    type: '',
+    audit: '',
     year_end: 0,
     nif: '',
     cnae: '',
-    sole: false,
-    mgmt: 'S_D',
-    mgmt_rem: false,
-    id: '',
+    sole: '' || false,
+    mgmt: '',
+    mgmt_rem: '',
     actions: [],
-  } as Company);
+    id: '',
+  });
   const { control, handleSubmit } = useForm<any>();
+  let navigate = useNavigate();
   const onSubmit: SubmitHandler<any> = async (data, event) => {
-    console.log(data.type);
-    setCompanyData((prev) => {
-      return {
-        ...prev,
-        name: data.name,
-        type: data.type,
-        audit: data.audit,
-        year_end: Number(data.year_end),
-        nif: data.nif,
-        cnae: data.cnae,
-        sole: data.sole,
-        mgmt: data.mgmt,
-        mgmt_rem: data.mgmt_rem,
-      };
-    });
-    const postCompany = await fetch('http://localhost:3001/company', {
+    console.log('Query', data);
+    const postCompany: Company = {
+      name: data.name,
+      type: data.type,
+      audit: data.audit || false,
+      year_end: 3112,
+      nif: data.nif,
+      cnae: data.cnae,
+      sole: data.sole || false,
+      mgmt: data.mgmt,
+      mgmt_rem: data.mgmt_rem || false,
+      actions: [],
+      id: '',
+    };
+    const responseCompany = await fetch('http://localhost:3001/company', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(companyData),
+      body: JSON.stringify(postCompany),
     });
-    console.log(postCompany);
+    const jsonCompany = await responseCompany.json();
+    console.log(jsonCompany);
+    navigate(`/company/#${jsonCompany.id}`, {
+      replace: true,
+      state: { company: jsonCompany },
+    });
   };
-  // const handleClick = () => {
-  //   console.log('send', companyData);
-  // };
   const name = (
     <Controller
       name='name'
       control={control}
-      defaultValue={companyData.name ? companyData.name : ''}
+      defaultValue={''}
       render={({ field }) => {
         return (
           <>
@@ -99,20 +90,21 @@ const CompanyForm = (props: Props) => {
     <Controller
       name='type'
       control={control}
-      defaultValue={companyData.type !== undefined ? companyData.type : ''}
+      defaultValue={''}
       render={({ field }) => {
         return (
-          <>
-            <InputLabel htmlFor='type'>Type</InputLabel>
-            <FilledInput
-              {...field}
-              id='type'
-              aria-describedby='company-type-helper'
+          <RadioGroup {...field} id='type' aria-labelledby='type' name='type'>
+            <FormControlLabel
+              value='SA'
+              control={<Radio />}
+              label='Sociedad Anónima'
             />
-            <FormHelperText id='company-type-helper' className='helper'>
-              Type of the Company
-            </FormHelperText>
-          </>
+            <FormControlLabel
+              value='SL'
+              control={<Radio />}
+              label='Sociedad Limitada'
+            />
+          </RadioGroup>
         );
       }}
     />
@@ -121,7 +113,7 @@ const CompanyForm = (props: Props) => {
     <Controller
       name='audit'
       control={control}
-      defaultValue={companyData.year_end ? companyData.year_end : ''}
+      defaultValue={''}
       render={({ field }) => {
         return (
           <FormControlLabel
@@ -134,37 +126,37 @@ const CompanyForm = (props: Props) => {
       }}
     />
   );
-  const year_end = (
-    <Controller
-      name='year_end'
-      control={control}
-      defaultValue={companyData.year_end ? companyData.year_end : ''}
-      render={({ field }) => {
-        return (
-          <>
-            <InputLabel htmlFor='year_end'>End of Year</InputLabel>
-            <FilledInput
-              {...field}
-              id='year_end'
-              aria-describedby='company-year-end'
-            />
-            <FormHelperText id='company-year-end' className='helper'>
-              End of the company's fiscal year
-            </FormHelperText>
-          </>
-        );
-      }}
-    />
-  );
+  // const year_end = (
+  //   <Controller
+  //     name='year_end'
+  //     control={control}
+  //     defaultValue={''}
+  //     render={({ field }) => {
+  //       return (
+  //         <>
+  //           <InputLabel htmlFor='year_end'>End of Year</InputLabel>
+  //           <FilledInput
+  //             {...field}
+  //             id='year_end'
+  //             aria-describedby='company-year-end'
+  //           />
+  //           <FormHelperText id='company-year-end' className='helper'>
+  //             End of the company's fiscal year
+  //           </FormHelperText>
+  //         </>
+  //       );
+  //     }}
+  //   />
+  // );
   const nif = (
     <Controller
       name='nif'
       control={control}
-      defaultValue={companyData.nif ? companyData.nif : ''}
+      defaultValue={''}
       render={({ field }) => {
         return (
           <>
-            <InputLabel htmlFor='5'>NIF</InputLabel>
+            <InputLabel htmlFor='nif'>NIF</InputLabel>
             <FilledInput {...field} id='nif' aria-describedby='company-nif' />
             <FormHelperText id='company-nif' className='helper'>
               Spanish National Identification Number
@@ -178,12 +170,16 @@ const CompanyForm = (props: Props) => {
     <Controller
       name='cnae'
       control={control}
-      defaultValue={companyData.cnae ? companyData.cnae : ''}
+      defaultValue={''}
       render={({ field }) => {
         return (
           <>
-            <InputLabel htmlFor='6'>CNAE</InputLabel>
-            <FilledInput id='6' aria-describedby='company-cnae-helper' />
+            <InputLabel htmlFor='cnae'>CNAE</InputLabel>
+            <FilledInput
+              {...field}
+              id='cnae'
+              aria-describedby='company-cnae-helper'
+            />
             <FormHelperText id='company-cnae-helper' className='helper'>
               CNAE Code
             </FormHelperText>
@@ -196,7 +192,7 @@ const CompanyForm = (props: Props) => {
     <Controller
       name='sole'
       control={control}
-      defaultValue={companyData.sole ? companyData.sole : ''}
+      defaultValue={''}
       render={({ field }) => {
         return (
           <FormControlLabel
@@ -213,7 +209,7 @@ const CompanyForm = (props: Props) => {
     <Controller
       name='mgmt'
       control={control}
-      defaultValue={companyData.mgmt ? companyData.mgmt : ''}
+      defaultValue={''}
       render={({ field }) => {
         return (
           <RadioGroup
@@ -251,7 +247,7 @@ const CompanyForm = (props: Props) => {
     <Controller
       name='mgmt_rem'
       control={control}
-      defaultValue={companyData.mgmt_rem ? companyData.mgmt_rem : ''}
+      defaultValue={''}
       render={({ field }) => {
         return (
           <FormControlLabel
@@ -271,16 +267,16 @@ const CompanyForm = (props: Props) => {
   return (
     <div className='form-modal'>
       <div className='form-container'>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {name}
-          {type}
-          {audit}
-          {year_end}
-          {nif}
-          {cnae}
-          {sole}
-          {mgmt}
-          {mgmt_rem}
+        <form onSubmit={handleSubmit(onSubmit)} className='form'>
+          <div>{name}</div>
+          <div>{type}</div>
+          <div>{audit}</div>
+          {/* {year_end} */}
+          <div>{nif}</div>
+          <div>{cnae}</div>
+          <div>{sole}</div>
+          <div>{mgmt}</div>
+          <div>{mgmt_rem}</div>
           <Stack direction='row' spacing={2} className='button-container'>
             <Button
               onClick={() => {}}
@@ -306,13 +302,3 @@ const CompanyForm = (props: Props) => {
 };
 
 export default CompanyForm;
-
-// 1"name": "CODEWORKS",
-// 2"type": "SL",
-// 3"audit": false,
-// 4"year_end": 3112,
-// 5"nif": "B-78239152",
-// 6"cnae": "5374",
-// 7"sole": true,
-// 8"mgmt": "S_D",
-// 9"mgmt_rem": false
