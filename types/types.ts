@@ -12,7 +12,8 @@ class Company {
   name!: string;
   type!: CompanyType;
   audit!: boolean;
-  year_end!: number;
+  year_end_month!: number;
+  year_end_day!: number;
   actions!: Action[];
   nif!: string;
   cnae!: string;
@@ -24,10 +25,19 @@ class Company {
 type Category = 'ACCOUNTS' | 'BOOKS' | 'APPOINTMENT';
 type Frequency = 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'YEARLY';
 
+type DueDate = {
+  [key: string]: string | number | number[] | boolean | null;
+  year: string;
+  month: string;
+  day: string;
+};
+
 class Action {
   constructor(
     id: string | number,
-    due_date: number,
+    due_year: number,
+    due_month: number,
+    due_day: number,
     name: string,
     completed: boolean,
     hidden: boolean,
@@ -36,7 +46,9 @@ class Action {
     _requirements: keyof Company
   ) {
     this.id = id;
-    this.due_date = due_date;
+    this.due_year = due_year;
+    this.due_month = due_month;
+    this.due_day = due_day;
     this.name = name;
     this.completed = completed;
     this.hidden = hidden;
@@ -46,7 +58,9 @@ class Action {
     this._insertAction;
   }
   id?: string | number;
-  due_date!: number;
+  due_year?: number;
+  due_month!: number;
+  due_day!: number;
   name!: string;
   completed!: boolean;
   hidden!: boolean;

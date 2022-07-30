@@ -48,7 +48,7 @@ const getCompanies = async (req: Request, res: Response) => {
 };
 
 const getCompanyByName = async (name: string) => {
-  const company: Company | null = await prisma.company.findUnique({
+  const company = await prisma.company.findUnique({
     where: { name: name },
     include: {
       actions: true,

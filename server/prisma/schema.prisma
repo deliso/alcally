@@ -24,7 +24,8 @@ model Company {
   name        String   @unique
   type        Type
   audit       Boolean
-  year_end    Int
+  year_end_day    Int
+  year_end_month    Int
   actions     Action[] 
   nif         String @unique
   cnae        String
@@ -47,7 +48,9 @@ model Action {
   id           String @id @default(cuid()) 
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  due_date      Int
+  due_year      Int
+  due_month     Int
+  due_day       Int
   name          String
   company       Company @relation(fields: [companyId], references: [id], onDelete: Cascade) 
   companyId     String
