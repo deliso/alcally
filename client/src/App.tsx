@@ -1,4 +1,3 @@
-import React from 'react';
 import { CompanySelection } from './Pages/CompanyPage/CompanySelection';
 import './App.css';
 

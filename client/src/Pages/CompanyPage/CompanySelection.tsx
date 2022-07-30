@@ -15,7 +15,11 @@ export const CompanySelection = (props: Props) => {
   const baseUrl = 'http://localhost:3001/';
   const [companies, setCompanies] = useState<Company[]>([]);
   const [selectedCompany, setSelectedCompany] = useState<Company | null>();
+  const [create, setCreate] = useState<boolean>(false);
   const handleChange = (e: any) => {
+    if (e.target.value === 'create') {
+      setCreate(true);
+    }
     const selectedCompany: Company[] = companies.filter(
       (company) => company.id === e.target.value
     );
@@ -29,41 +33,67 @@ export const CompanySelection = (props: Props) => {
       setCompanies([...jsonCompanyData]);
     };
     getCompanies();
+    console.log(location.pathname);
+    if (location.pathname === '/create') setCreate(true);
   }, []);
 
   return (
     <div className='company-selection'>
       <CompanyContext.Provider value={selectedCompany}>
         <Box className='selector' sx={{ minWidth: 120 }}>
-          <FormControl fullWidth>
-            <InputLabel id='demo-simple-select-label'>
-              Select a Company
-            </InputLabel>
+          <FormControl
+            fullWidth
+            disabled={create ? true : false}
+            sx={{
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderStyle: 'none',
+              },
+              ' & .MuiInputLabel-shrink': {
+                display: 'none',
+              },
+              ' & .MuiInputLabel-root': {
+                display: 'none',
+              },
+              ' & .MuiInputLabel-formControl': {
+                display: 'none',
+              },
+              ' & .MuiFormLabel-root': {
+                display: 'none',
+              },
+              ' & .MuiInputLabel-filled': {
+                display: 'none',
+              },
+            }}
+          >
+            <InputLabel id='company-select-label'>Select company</InputLabel>
             <Select
-              labelId='demo-simple-select-label'
-              id='demo-simple-select'
+              labelId='company-select-label'
+              id='company-select'
               label='Company'
               onChange={handleChange}
-              defaultValue={location.hash.slice(1)}
+              defaultValue={
+                create ? 'create' : location.hash.slice(1) || 'select'
+              }
             >
+              <MenuItem key='select' value='select'>
+                Select a company...
+              </MenuItem>
               {companies.map((company) => {
                 return (
-                  <MenuItem id={company.name} value={company.id}>
-                    <CompanyContext.Provider
-                      value={[selectedCompany, setSelectedCompany]}
-                    >
+                  <MenuItem key={company.name} value={company.id}>
+                    <CompanyContext.Provider value={selectedCompany}>
                       <Link
                         to={`/company/#${company.id}`}
                         state={{ company: company }}
                       >
-                        {company.name}
+                        {company.name}, {company.type}
                       </Link>
                     </CompanyContext.Provider>
                   </MenuItem>
                 );
               })}
               <MenuItem id='create' value='create'>
-                Create a Company
+                <Link to={'/create'}>Create a company...</Link>
               </MenuItem>
             </Select>
           </FormControl>

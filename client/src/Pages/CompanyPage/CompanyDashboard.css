@@ -5,3 +5,34 @@
   align-items: center;
   justify-content: center;
 }
+.dashboard-container {
+  display: flex;
+  gap: 10rem;
+}
+
+.cards-container-border {
+  background-color: rgb(227, 228, 228);
+  height: 60vh;
+  width: 30vw;
+  padding: 16px;
+  border-radius: 4px;
+}
+.action-cards-container {
+  background-color: rgb(227, 228, 228);
+  box-sizing: border-box;
+  max-height: 60vh;
+  width: 30vw;
+  border-radius: 4px;
+  overflow: scroll;
+}
+.company-card-container {
+  background-color: rgb(227, 228, 228);
+  box-sizing: border-box;
+  height: 100%;
+  width: 30vw;
+  border-radius: 4px;
+}
+
+.action-cards-container::-webkit-scrollbar {
+  display: none;
+}
