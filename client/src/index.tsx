@@ -5,7 +5,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import CompanyDashboard from './Pages/CompanyPage/CompanyDashboard';
-import CompanyForm from './Pages/CompanyPage/CompanyForm';
+// import CompanyForm from './Pages/CompanyPage/CompanyForm';
+import NewCompanyForm from './Pages/CompanyPage/NewCompanyForm';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,7 +17,8 @@ root.render(
       <Routes>
         <Route path='/' element={<App />}>
           <Route path='company' element={<CompanyDashboard />} />
-          <Route path='create' element={<CompanyForm />} />
+          {/* <Route path='create' element={<CompanyForm />} /> */}
+          <Route path='create' element={<NewCompanyForm />} />
         </Route>
       </Routes>
     </BrowserRouter>

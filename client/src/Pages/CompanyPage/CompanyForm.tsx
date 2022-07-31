@@ -18,6 +18,7 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { Company } from '../../../../types/types';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { Card, Divider } from '@mui/material';
 
 type Props = {};
 
@@ -68,6 +69,7 @@ const CompanyForm = (props: Props) => {
   const name = (
     <Controller
       name='name'
+      rules={{ required: true }}
       control={control}
       defaultValue={''}
       render={({ field }) => {
@@ -90,6 +92,7 @@ const CompanyForm = (props: Props) => {
   const type = (
     <Controller
       name='type'
+      rules={{ required: true }}
       control={control}
       defaultValue={''}
       render={({ field }) => {
@@ -125,6 +128,7 @@ const CompanyForm = (props: Props) => {
   const audit = (
     <Controller
       name='audit'
+      rules={{ required: true }}
       control={control}
       defaultValue={''}
       render={({ field }) => {
@@ -165,6 +169,7 @@ const CompanyForm = (props: Props) => {
   const nif = (
     <Controller
       name='nif'
+      rules={{ required: true }}
       control={control}
       defaultValue={''}
       render={({ field }) => {
@@ -183,6 +188,7 @@ const CompanyForm = (props: Props) => {
   const cnae = (
     <Controller
       name='cnae'
+      rules={{ required: true }}
       control={control}
       defaultValue={''}
       render={({ field }) => {
@@ -205,6 +211,7 @@ const CompanyForm = (props: Props) => {
   const sole = (
     <Controller
       name='sole'
+      rules={{ required: true }}
       control={control}
       defaultValue={''}
       render={({ field }) => {
@@ -223,37 +230,45 @@ const CompanyForm = (props: Props) => {
   const mgmt = (
     <Controller
       name='mgmt'
+      rules={{ required: true }}
       control={control}
       defaultValue={''}
       render={({ field }) => {
         return (
-          <RadioGroup
-            {...field}
+          <FormControlLabel
             id='mgmt'
-            aria-labelledby='demo-controlled-radio-buttons-group'
-            name='controlled-radio-buttons-group'
-          >
-            <FormControlLabel
-              value='S_D'
-              control={<Radio />}
-              label='Sole Director'
-            />
-            <FormControlLabel
-              value='J_S_D'
-              control={<Radio />}
-              label='Joint and Several Directors'
-            />
-            <FormControlLabel
-              value='J_D'
-              control={<Radio />}
-              label='Joint Directors'
-            />
-            <FormControlLabel
-              value='BOD'
-              control={<Radio />}
-              label='Board of Directors'
-            />
-          </RadioGroup>
+            label='Management body'
+            labelPlacement='top'
+            control={
+              <RadioGroup
+                {...field}
+                id='mgmt'
+                aria-labelledby='demo-controlled-radio-buttons-group'
+                name='controlled-radio-buttons-group'
+              >
+                <FormControlLabel
+                  value='S_D'
+                  control={<Radio />}
+                  label='Sole Director'
+                />
+                <FormControlLabel
+                  value='J_S_D'
+                  control={<Radio />}
+                  label='Joint and Several Directors'
+                />
+                <FormControlLabel
+                  value='J_D'
+                  control={<Radio />}
+                  label='Joint Directors'
+                />
+                <FormControlLabel
+                  value='BOD'
+                  control={<Radio />}
+                  label='Board of Directors'
+                />
+              </RadioGroup>
+            }
+          />
         );
       }}
     />
@@ -262,6 +277,7 @@ const CompanyForm = (props: Props) => {
     <Controller
       name='mgmt_rem'
       control={control}
+      rules={{ required: true }}
       defaultValue={''}
       render={({ field }) => {
         return (
@@ -284,14 +300,22 @@ const CompanyForm = (props: Props) => {
     <div className='form-modal'>
       <div className='form-container'>
         <form onSubmit={handleSubmit(onSubmit)} className='form'>
+          <Divider style={{ width: '100%' }} />
           <div>{name}</div>
+          <Divider style={{ width: '100%' }} />
           <div>{type}</div>
+          <Divider style={{ width: '100%' }} />
           <div>{audit}</div>
+          <Divider style={{ width: '100%' }} />
           {/* {year_end} */}
           <div>{nif}</div>
+          <Divider style={{ width: '100%' }} />
           <div>{cnae}</div>
+          <Divider style={{ width: '100%' }} />
           <div>{sole}</div>
+          <Divider style={{ width: '100%' }} />
           <div>{mgmt}</div>
+          <Divider style={{ width: '100%' }} />
           <div>{mgmt_rem}</div>
           <Stack direction='row' spacing={2} className='button-container'>
             <Button
