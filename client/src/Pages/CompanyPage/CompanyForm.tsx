@@ -1,330 +1,291 @@
 import './CompanyForm.css';
-import InputLabel from '@mui/material/InputLabel';
-import FormHelperText from '@mui/material/FormHelperText';
-import FormControl from '@mui/material/FormControl';
-import FilledInput from '@mui/material/FilledInput';
-import ArrowBack from '@mui/icons-material/ArrowBack';
-import Send from '@mui/icons-material/Send';
-import ArrowForward from '@mui/icons-material/ArrowForward';
-import Stack from '@mui/material/Stack';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import RadioGroup from '@mui/material/RadioGroup';
-import Radio from '@mui/material/Radio';
-import Button from '@mui/material/Button';
-import { useState } from 'react';
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import {
+  ArrowBack,
+  Send,
+  SystemSecurityUpdateSharp,
+} from '@mui/icons-material';
+import {
+  Box,
+  Button,
+  Container,
+  FormControl,
+  FormControlLabel,
+  InputLabel,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  Select,
+  Switch,
+  TextField,
+} from '@mui/material';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import { Company } from '../../../../types/types';
-import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { Card, Divider } from '@mui/material';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 type Props = {};
 
+const CompanySchema = yup.object().shape({
+  name: yup.string().required('Name is required'),
+  type: yup.string().required('Type is required'),
+  nif: yup.string().required('NIF is required'),
+  cnae: yup
+    .number()
+    .typeError('CNAE must be a number')
+    .positive('CNAE must be positive')
+    .integer('CNAE must be an integer')
+    .min(1000, 'CNAE must be 4 digits long')
+    .max(9999, 'CNAE must be 4 digits long')
+    .required('CNAE is required'),
+  year_end_month: yup
+    .number()
+    .typeError('Month must be a number')
+    .integer('Please enter a valid month')
+    .min(1, 'Please enter a valid month')
+    .max(12, 'Please enter a valid month')
+    .required('Month is required'),
+  year_end_day: yup
+    .number()
+    .typeError('Day must be a number')
+    .integer('Please enter a valid day')
+    .min(1, 'Please enter a valid day')
+    .max(31, 'Please enter a valid day')
+    .required('Day is required'),
+  sole: yup.boolean().required(),
+  audit: yup.boolean().required(),
+  mgmt: yup.string().required('Management type is required'),
+  mgmt_rem: yup.boolean().required(),
+});
+
+interface ICompanyForm {
+  name: string;
+  type: string;
+  nif: string;
+  cnae: number;
+  year_end_month: number;
+  year_end_day: number;
+  sole: boolean;
+  audit: number;
+  mgmt: number;
+  mgmt_rem: boolean;
+}
+
+// id: string;
+// actions!: Action[];
+
 const CompanyForm = (props: Props) => {
-  const [companyData, setCompanyData] = useState({
-    name: '',
-    type: '',
-    audit: '',
-    year_end: 0,
-    nif: '',
-    cnae: '',
-    sole: '' || false,
-    mgmt: '',
-    mgmt_rem: '',
-    actions: [],
-    id: '',
-  });
-  const { control, handleSubmit } = useForm<any>();
+  const [mgmt, setMgmt] = useState('BOD');
+  const [type, setType] = useState('SA');
   let navigate = useNavigate();
-  const onSubmit: SubmitHandler<any> = async (data, event) => {
-    console.log('Query', data);
-    const postCompany: Company = {
-      name: data.name,
-      type: data.type,
-      audit: data.audit || false,
-      year_end_month: 12,
-      year_end_day: 31,
-      nif: data.nif,
-      cnae: data.cnae,
-      sole: data.sole || false,
-      mgmt: data.mgmt,
-      mgmt_rem: data.mgmt_rem || false,
-      actions: [],
-      id: '',
-    };
-    const responseCompany = await fetch('http://localhost:3001/company', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(postCompany),
-    });
-    const jsonCompany = await responseCompany.json();
-    console.log(jsonCompany);
-    navigate(`/company/#${jsonCompany.id}`, {
-      replace: true,
-      state: { company: jsonCompany },
-    });
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<ICompanyForm>({
+    resolver: yupResolver(CompanySchema),
+  });
+  const handleMgmt = (event: any) => {
+    setMgmt(event.target.value);
+    setValue('mgmt', event.target.value, { shouldValidate: true });
   };
-  const name = (
-    <Controller
-      name='name'
-      rules={{ required: true }}
-      control={control}
-      defaultValue={''}
-      render={({ field }) => {
-        return (
-          <>
-            <InputLabel htmlFor='1'>Name</InputLabel>
-            <FilledInput
-              id='name'
-              {...field}
-              aria-describedby='company-name-helper'
-            />
-            <FormHelperText id='company-name-helper' className='helper'>
-              Name of the company
-            </FormHelperText>
-          </>
-        );
-      }}
-    />
-  );
-  const type = (
-    <Controller
-      name='type'
-      rules={{ required: true }}
-      control={control}
-      defaultValue={''}
-      render={({ field }) => {
-        return (
-          <FormControlLabel
-            id='type'
-            label='Type of the company'
-            labelPlacement='top'
-            control={
-              <RadioGroup
-                {...field}
-                id='type'
-                aria-labelledby='type'
-                name='type'
-              >
-                <FormControlLabel
-                  value='SA'
-                  control={<Radio />}
-                  label='Sociedad Anónima'
-                />
-                <FormControlLabel
-                  value='SL'
-                  control={<Radio />}
-                  label='Sociedad Limitada'
-                />
-              </RadioGroup>
-            }
-          />
-        );
-      }}
-    />
-  );
-  const audit = (
-    <Controller
-      name='audit'
-      rules={{ required: true }}
-      control={control}
-      defaultValue={''}
-      render={({ field }) => {
-        return (
-          <FormControlLabel
-            id='audit'
-            label='Does the company audit its annual accounts?'
-            labelPlacement='start'
-            control={<Switch {...field} size='medium' />}
-            sx={{ 'margin-left': '0px' }}
-          />
-        );
-      }}
-    />
-  );
-  // const year_end = (
-  //   <Controller
-  //     name='year_end'
-  //     control={control}
-  //     defaultValue={''}
-  //     render={({ field }) => {
-  //       return (
-  //         <>
-  //           <InputLabel htmlFor='year_end'>End of Year</InputLabel>
-  //           <FilledInput
-  //             {...field}
-  //             id='year_end'
-  //             aria-describedby='company-year-end'
-  //           />
-  //           <FormHelperText id='company-year-end' className='helper'>
-  //             End of the company's fiscal year
-  //           </FormHelperText>
-  //         </>
-  //       );
-  //     }}
-  //   />
-  // );
-  const nif = (
-    <Controller
-      name='nif'
-      rules={{ required: true }}
-      control={control}
-      defaultValue={''}
-      render={({ field }) => {
-        return (
-          <>
-            <InputLabel htmlFor='nif'>NIF</InputLabel>
-            <FilledInput {...field} id='nif' aria-describedby='company-nif' />
-            <FormHelperText id='company-nif' className='helper'>
-              Spanish National Identification Number
-            </FormHelperText>
-          </>
-        );
-      }}
-    />
-  );
-  const cnae = (
-    <Controller
-      name='cnae'
-      rules={{ required: true }}
-      control={control}
-      defaultValue={''}
-      render={({ field }) => {
-        return (
-          <>
-            <InputLabel htmlFor='cnae'>CNAE</InputLabel>
-            <FilledInput
-              {...field}
-              id='cnae'
-              aria-describedby='company-cnae-helper'
-            />
-            <FormHelperText id='company-cnae-helper' className='helper'>
-              CNAE Code
-            </FormHelperText>
-          </>
-        );
-      }}
-    />
-  );
-  const sole = (
-    <Controller
-      name='sole'
-      rules={{ required: true }}
-      control={control}
-      defaultValue={''}
-      render={({ field }) => {
-        return (
-          <FormControlLabel
-            id='sole'
-            label='Is the company owned by a sole shareholder?'
-            labelPlacement='start'
-            control={<Switch {...field} size='medium' />}
-            sx={{ 'margin-left': '0px' }}
-          />
-        );
-      }}
-    />
-  );
-  const mgmt = (
-    <Controller
-      name='mgmt'
-      rules={{ required: true }}
-      control={control}
-      defaultValue={''}
-      render={({ field }) => {
-        return (
-          <FormControlLabel
-            id='mgmt'
-            label='Management body'
-            labelPlacement='top'
-            control={
-              <RadioGroup
-                {...field}
-                id='mgmt'
-                aria-labelledby='demo-controlled-radio-buttons-group'
-                name='controlled-radio-buttons-group'
-              >
-                <FormControlLabel
-                  value='S_D'
-                  control={<Radio />}
-                  label='Sole Director'
-                />
-                <FormControlLabel
-                  value='J_S_D'
-                  control={<Radio />}
-                  label='Joint and Several Directors'
-                />
-                <FormControlLabel
-                  value='J_D'
-                  control={<Radio />}
-                  label='Joint Directors'
-                />
-                <FormControlLabel
-                  value='BOD'
-                  control={<Radio />}
-                  label='Board of Directors'
-                />
-              </RadioGroup>
-            }
-          />
-        );
-      }}
-    />
-  );
-  const mgmt_rem = (
-    <Controller
-      name='mgmt_rem'
-      control={control}
-      rules={{ required: true }}
-      defaultValue={''}
-      render={({ field }) => {
-        return (
-          <FormControlLabel
-            id='mgmt_rem'
-            label='Do any of the directors receive remuneration?'
-            labelPlacement='start'
-            control={<Switch {...field} size='medium' />}
-            sx={{ 'margin-left': '0px' }}
-          />
-        );
-      }}
-    />
-  );
-  // const handleChange: () => void = () => {};
-  // const handleSubmit: (e: any) => void = (e) => {
-  //   console.log(e.target.value);
-  // };
+  const handleType = (event: any) => {
+    setType(event.target.value);
+    setValue('type', event.target.value, { shouldValidate: true });
+  };
+
+  const onSubmit = async (data: any) => {
+    console.log(data);
+    const isValid = await CompanySchema.isValid(data);
+    if (isValid) {
+      try {
+        const inputCompany: Company = {
+          ...data,
+          actions: [],
+          id: '',
+        };
+        console.log(inputCompany);
+        const responseCompany = await fetch('http://localhost:3001/company', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(inputCompany),
+        });
+        const jsonCompany = await responseCompany.json();
+        console.log(jsonCompany);
+        navigate(`/company/#${jsonCompany.id}`, {
+          replace: true,
+          state: { company: jsonCompany },
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    // if (isValid) {
+    //   const inputCompany: Company = {
+    //     ...data,
+    //     actions: [],
+    //     id: '',
+    //   };
+    //   console.log(inputCompany);
+    //   const responseCompany = await fetch('http://localhost:3001/company', {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify(inputCompany),
+    //   });
+    //   const jsonCompany = await responseCompany.json();
+    //   console.log(jsonCompany);
+    //   navigate(`/company/#${jsonCompany.id}`, {
+    //     replace: true,
+    //     state: { company: jsonCompany },
+    //   });
+    // }
+  };
   return (
-    <div className='form-modal'>
-      <div className='form-container'>
-        <form onSubmit={handleSubmit(onSubmit)} className='form'>
-          <Divider style={{ width: '100%' }} />
-          <div>{name}</div>
-          <Divider style={{ width: '100%' }} />
-          <div>{type}</div>
-          <Divider style={{ width: '100%' }} />
-          <div>{audit}</div>
-          <Divider style={{ width: '100%' }} />
-          {/* {year_end} */}
-          <div>{nif}</div>
-          <Divider style={{ width: '100%' }} />
-          <div>{cnae}</div>
-          <Divider style={{ width: '100%' }} />
-          <div>{sole}</div>
-          <Divider style={{ width: '100%' }} />
-          <div>{mgmt}</div>
-          <Divider style={{ width: '100%' }} />
-          <div>{mgmt_rem}</div>
-          <Stack direction='row' spacing={2} className='button-container'>
+    <div>
+      <Container>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Box mb={2}>
+            {/* 'NAME' */}
+            <TextField
+              variant='filled'
+              label='Name'
+              fullWidth
+              autoFocus
+              {...register('name')}
+              error={!!errors.name}
+              helperText={errors?.name && errors.name.message}
+            />
+            {/* 'TYPE' */}
+            <FormControl fullWidth {...register('type')}>
+              <InputLabel id='type'>Type</InputLabel>
+              <Select
+                variant='filled'
+                labelId='type'
+                id='type'
+                value={type}
+                label='Type'
+                onChange={handleType}
+              >
+                <MenuItem value={'SA'}>Sociedad Anónima</MenuItem>
+                <MenuItem value={'SL'}>Sociedad Limitada</MenuItem>
+              </Select>
+            </FormControl>
+            {/* <RadioGroup
+              {...register('type')}
+              onChange={(e) => setType(e.target.value)}
+              value={type}
+            >
+              <FormControlLabel
+                value='SA'
+                control={<Radio />}
+                label='Sociedad Anónima'
+              />
+              <FormControlLabel
+                value='SL'
+                control={<Radio />}
+                label='Sociedad Limitada'
+              />
+            </RadioGroup> */}
+            {/* 'NIF' */}
+            <TextField
+              variant='filled'
+              label='NIF'
+              fullWidth
+              {...register('nif')}
+              error={!!errors.nif}
+              helperText={errors?.nif && errors.nif.message}
+            />
+            {/* 'CNAE' */}
+            <TextField
+              variant='filled'
+              label='CNAE'
+              fullWidth
+              {...register('cnae')}
+              error={!!errors.cnae}
+              helperText={errors?.cnae && errors.cnae.message}
+            />
+
+            {/* 'YEAR-END-MONTH' */}
+            <TextField
+              type='number'
+              InputProps={{ inputProps: { min: 1, max: 12 } }}
+              variant='filled'
+              label='Month'
+              fullWidth
+              {...register('year_end_month')}
+              error={!!errors.year_end_month}
+              helperText={
+                errors?.year_end_month && errors.year_end_month.message
+              }
+            />
+            {/* 'YEAR-END-DAY' */}
+            <TextField
+              type='number'
+              InputProps={{ inputProps: { min: 1, max: 31 } }}
+              variant='filled'
+              label='Day'
+              fullWidth
+              {...register('year_end_day')}
+              error={!!errors.year_end_day}
+              helperText={errors?.year_end_day && errors.year_end_day.message}
+            />
+            {/* 'MGMT' */}
+            <FormControl fullWidth {...register('mgmt')}>
+              <InputLabel id='mgmt'>Management Body</InputLabel>
+              <Select
+                variant='filled'
+                labelId='demo-simple-select-label'
+                id='demo-simple-select'
+                value={mgmt}
+                label='mgmt'
+                onChange={handleMgmt}
+              >
+                <MenuItem value={'BOD'}>Board of Directors</MenuItem>
+                <MenuItem value={'J_D'}>Joint Director</MenuItem>
+                <MenuItem value={'J_S_D'}>Joint and Several Director</MenuItem>
+                <MenuItem value={'S_D'}>Sole Director</MenuItem>
+              </Select>
+            </FormControl>
+            {/* 'SOLE' */}
+            <div className='switch'>
+              <FormControlLabel
+                id='sole'
+                label='Is the Company owned by a sole shareholder?'
+                labelPlacement='start'
+                control={<Switch {...register('sole')} size='medium' />}
+                sx={{ 'margin-left': '0px' }}
+              />
+            </div>
+            {/* 'AUDIT' */}
+            <div className='switch'>
+              <FormControlLabel
+                id='audit'
+                label='Does the company audit its annual accounts?'
+                labelPlacement='start'
+                control={<Switch {...register('audit')} size='medium' />}
+                sx={{ 'margin-left': '0px' }}
+              />
+            </div>
+            {/* 'MGMT_REM' */}
+            <div className='switch'>
+              <FormControlLabel
+                id='mgmt_rem'
+                label='Do the director/s receive remuneration?'
+                labelPlacement='start'
+                control={<Switch {...register('mgmt_rem')} size='medium' />}
+                sx={{ 'margin-left': '0px' }}
+              />
+            </div>
             <Button
               onClick={() => {}}
               size='small'
               variant='outlined'
               startIcon={<ArrowBack />}
             >
-              Prev
+              <Link to={'/'}>Cancel</Link>
             </Button>
             <Button
               type='submit'
@@ -334,9 +295,9 @@ const CompanyForm = (props: Props) => {
             >
               Submit
             </Button>
-          </Stack>
+          </Box>
         </form>
-      </div>
+      </Container>
     </div>
   );
 };
