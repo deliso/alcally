@@ -28,7 +28,7 @@ model Company {
   year_end_month    Int
   actions     Action[] 
   nif         String @unique
-  cnae        String
+  cnae        Int
   sole        Boolean
   mgmt        Body
   mgmt_rem    Boolean

@@ -5,5 +5,6 @@ export const companyRouter = Router();
 
 // companyRouter.get('/', controllers.getCompanies);
 companyRouter.get('/company', companyControllers.getCompanies);
-companyRouter.post('/company', companyControllers.company);
+companyRouter.get('/company/:id', companyControllers.getCompanyById);
+companyRouter.post('/company', companyControllers.createCompany);
 companyRouter.delete('/company', companyControllers.deleteCompanies);

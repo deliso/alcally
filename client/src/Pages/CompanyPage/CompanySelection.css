@@ -1,13 +1,12 @@
 .company-selection {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   padding: 8px;
 }
 
 #company-select {
   text-align: left;
+  justify-content: space-between;
 }
 
 .selector {
@@ -21,4 +20,13 @@ a {
 
 .MuiInputLabel-outlined {
   border-style: none;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.navbar-item {
+  width: 10vw;
 }

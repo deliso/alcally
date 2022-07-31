@@ -11,13 +11,15 @@ const { DateTime } = require('luxon');
 type Props = {
   key: string | number | undefined;
   action: Action;
+  complete: boolean;
+  handleComplete: any;
 };
 
 const ActionCardItem = (props: Props) => {
   const [overdue, setOverdue] = useState(false);
   const dt = DateTime;
-  // const company = useContext(selectedCompany) as Company;
   const action: Action = props.action;
+  const handleComplete: any = props.handleComplete;
   const dueDate: number = dt
     .utc(action.due_year, action.due_month, action.due_day)
     .toFormat('MMMM dd, yyyy');
@@ -41,7 +43,15 @@ const ActionCardItem = (props: Props) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size='small'>Mark Complete</Button>
+        {action.completed ? (
+          <Button size='small' onClick={() => handleComplete(action.id)}>
+            Completed
+          </Button>
+        ) : (
+          <Button size='small' onClick={() => handleComplete(action.id)}>
+            Mark Complete
+          </Button>
+        )}
       </CardActions>
     </div>
   );

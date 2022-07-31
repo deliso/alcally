@@ -9,6 +9,7 @@
   padding: 32px;
   overflow: scroll;
 }
+
 /* .form-container {
   width: 60vw;
   display: flex;
@@ -24,6 +25,13 @@
 
 .button-container {
   display: flex;
-  height: 50vh;
   align-items: flex-end;
+  align-self: center;
+}
+
+#type,
+#mgmt {
+  margin-left: 0;
+  gap: 8px;
+  align-items: flex-start;
 }
