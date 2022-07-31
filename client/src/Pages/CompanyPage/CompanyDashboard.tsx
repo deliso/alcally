@@ -24,7 +24,7 @@ const CompanyDashboard = (props: Props) => {
   const dt = DateTime;
   const currentTime = new Date(Date.now());
   const filterActions = (actions: Action[]) => {
-    actions.filter((action) => {
+    return actions.filter((action) => {
       return (
         dt
           .utc(action.due_year, action.due_month, action.due_day)
@@ -32,7 +32,6 @@ const CompanyDashboard = (props: Props) => {
         dt.utc(currentTime).toUnixInteger() + 31536000
       );
     });
-    return actions;
   };
 
   const sortActions = (actions: Action[]) => {
