@@ -16,7 +16,7 @@ class Company {
   year_end_day!: number;
   actions!: Action[];
   nif!: string;
-  cnae!: string;
+  cnae!: number;
   sole!: boolean;
   mgmt!: Body;
   mgmt_rem!: boolean;
