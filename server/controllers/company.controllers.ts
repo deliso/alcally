@@ -18,7 +18,7 @@ prisma.$on('query', (e) => {
   console.log('Duration: ' + e.duration + 'ms');
 });
 
-const company = async (req: Request, res: Response) => {
+const createCompany = async (req: Request, res: Response) => {
   let companyData: Company = req.body;
   console.log('RawData Test', req.body.name);
   insertActions(companyData);
@@ -47,6 +47,16 @@ const getCompanies = async (req: Request, res: Response) => {
   res.send(allCompanies);
 };
 
+const getCompanyById = async (req: Request, res: Response) => {
+  console.log(req.params.id);
+  const company = await prisma.company.findUnique({
+    where: { id: req.params.id },
+    include: {
+      actions: true,
+    },
+  });
+  res.send(company);
+};
 const getCompanyByName = async (name: string) => {
   const company = await prisma.company.findUnique({
     where: { name: name },
@@ -62,4 +72,4 @@ const deleteCompanies = async (req: Request, res: Response) => {
   res.send('Ok');
 };
 
-export default { getCompanies, company, deleteCompanies };
+export default { getCompanies, getCompanyById, createCompany, deleteCompanies };

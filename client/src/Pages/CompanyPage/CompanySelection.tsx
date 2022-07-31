@@ -17,6 +17,11 @@ export const CompanySelection = (props: Props) => {
   const [companies, setCompanies] = useState<Company[]>([]);
   const [selectedCompany, setSelectedCompany] = useState<Company | null>();
   const [create, setCreate] = useState<boolean>(false);
+  // const [completed, setCompleted] = useState<boolean>(false);
+  // const locationState = {
+  //   company: selectedCompany,
+  //   setCompleted: setCompleted,
+  // };
   const handleChange = (e: any) => {
     if (e.target.value === 'create') {
       setCreate(true);
