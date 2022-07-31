@@ -94,18 +94,30 @@ const CompanyForm = (props: Props) => {
       defaultValue={''}
       render={({ field }) => {
         return (
-          <RadioGroup {...field} id='type' aria-labelledby='type' name='type'>
-            <FormControlLabel
-              value='SA'
-              control={<Radio />}
-              label='Sociedad Anónima'
-            />
-            <FormControlLabel
-              value='SL'
-              control={<Radio />}
-              label='Sociedad Limitada'
-            />
-          </RadioGroup>
+          <FormControlLabel
+            id='type'
+            label='Type of the company'
+            labelPlacement='top'
+            control={
+              <RadioGroup
+                {...field}
+                id='type'
+                aria-labelledby='type'
+                name='type'
+              >
+                <FormControlLabel
+                  value='SA'
+                  control={<Radio />}
+                  label='Sociedad Anónima'
+                />
+                <FormControlLabel
+                  value='SL'
+                  control={<Radio />}
+                  label='Sociedad Limitada'
+                />
+              </RadioGroup>
+            }
+          />
         );
       }}
     />
@@ -122,6 +134,7 @@ const CompanyForm = (props: Props) => {
             label='Does the company audit its annual accounts?'
             labelPlacement='start'
             control={<Switch {...field} size='medium' />}
+            sx={{ 'margin-left': '0px' }}
           />
         );
       }}
@@ -201,6 +214,7 @@ const CompanyForm = (props: Props) => {
             label='Is the company owned by a sole shareholder?'
             labelPlacement='start'
             control={<Switch {...field} size='medium' />}
+            sx={{ 'margin-left': '0px' }}
           />
         );
       }}
@@ -253,9 +267,10 @@ const CompanyForm = (props: Props) => {
         return (
           <FormControlLabel
             id='mgmt_rem'
-            label='Does the company audit its accounts?'
+            label='Do any of the directors receive remuneration?'
             labelPlacement='start'
             control={<Switch {...field} size='medium' />}
+            sx={{ 'margin-left': '0px' }}
           />
         );
       }}
