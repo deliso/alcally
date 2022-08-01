@@ -44,7 +44,7 @@ const ActionCardItem = (props: Props) => {
           className='due-date'
         >
           {dueDate}
-          {overdue ? <Chip size='small' label='overdue' color='error' /> : ''}
+          {overdue ? <Chip size='small' label='OVERDUE' color='error' /> : ''}
         </Typography>
         <Typography variant='h6' component='div'>
           {action.name}

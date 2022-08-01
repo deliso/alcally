@@ -1,13 +1,14 @@
-import { Action, Company } from '../../../../types/types';
+import { Action, Company, Director } from '../../../../types/types';
 import './CompanyDashboard.css';
 import { useLocation } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import ActionCardItem from '../../Components/ActionCards/ActionCardItem';
 import CompanyCard from '../../Components/CompanyCard/CompanyCard';
-import { Grid, Stack } from '@mui/material';
+import { Button, Grid, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import { useEffect, useState } from 'react';
+import DirectorCard from '../../Components/DirectorCards/DirectorCard';
 const { DateTime } = require('luxon');
 
 type Props = {};
@@ -17,10 +18,10 @@ const CompanyDashboard = (props: Props) => {
   const location = useLocation();
   // const [company, setCompany] = useState<Company>();
   const [sortedActions, setSortedActions] = useState<Action[]>([]);
+  const [directors, setDirectors] = useState<Director[]>([]);
   // const [complete, setComplete] = useState<boolean>(false);
   const state = location.state as any;
   const company: Company = state.company;
-  console.log('not working', company);
   const id: string = company.id;
   const dt = DateTime;
   const currentTime = new Date(Date.now());
@@ -50,6 +51,7 @@ const CompanyDashboard = (props: Props) => {
       const jsonCompanyById = await companyById.json();
       const finalActions: Action[] = sortActions([...jsonCompanyById.actions]);
       setSortedActions([...finalActions]);
+      setDirectors([...jsonCompanyById.directors]);
     };
     getCompanyById();
   }, []);
@@ -99,6 +101,29 @@ const CompanyDashboard = (props: Props) => {
                   </Item>
                 ))}
               </Grid>
+            </div>
+            <div className='cards-container-border'>
+              <Box className='director-card-container'>
+                <div className='cards-container-header'>
+                  <span>DIRECTORS</span>
+                  <Button className='add-director-button' variant='contained'>
+                    ADD DIRECTOR
+                  </Button>
+                </div>
+                <Grid spacing={8} className='director-cards-container'>
+                  {directors.map((director: Director) => {
+                    console.log(director);
+                    return (
+                      <Item>
+                        <DirectorCard
+                          key={director.id}
+                          director={director}
+                        ></DirectorCard>
+                      </Item>
+                    );
+                  })}
+                </Grid>
+              </Box>
             </div>
             <div className='cards-container-border'>
               <Box className='company-card-container'>

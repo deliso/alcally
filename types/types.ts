@@ -15,22 +15,42 @@ class Company {
   year_end_month!: number;
   year_end_day!: number;
   actions!: Action[];
+  directors?: Director[];
   nif!: string;
   cnae!: number;
   sole!: boolean;
   mgmt!: Body;
   mgmt_rem!: boolean;
+  mgmt_num!: number;
+}
+
+class Director {
+  id!: string;
+  name!: string;
+  surname!: string;
+  role!: Role;
+  body!: Body;
+  active!: boolean;
+  appointment_year!: number;
+  appointment_month!: number;
+  appointment_day!: number;
+  expiry_year!: number;
+  expiry_month!: number;
+  expiry_day!: number;
+  nif!: string;
+  dir_rem!: boolean;
 }
 
 type Category = 'ACCOUNTS' | 'BOOKS' | 'APPOINTMENT';
 type Frequency = 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'YEARLY';
+type Role = 'DIRECTOR' | 'CHAIRMAN' | 'SECRETARY';
 
-type DueDate = {
-  [key: string]: string | number | number[] | boolean | null;
-  year: string;
-  month: string;
-  day: string;
-};
+// type DueDate = {
+//   [key: string]: string | number | number[] | boolean | null;
+//   year: string;
+//   month: string;
+//   day: string;
+// };
 
 class Action {
   constructor(
@@ -74,4 +94,4 @@ class Action {
   }
 }
 
-export { User, Company, Action };
+export { User, Company, Action, Director };
