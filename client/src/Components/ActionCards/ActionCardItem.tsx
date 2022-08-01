@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useContext, useEffect, useState } from 'react';
 import { Action, Company } from '../../../../types/types';
+import { Chip } from '@mui/material';
 const { DateTime } = require('luxon');
 
 type Props = {
@@ -33,10 +34,16 @@ const ActionCardItem = (props: Props) => {
     }
   }, []);
   const card = (
-    <div className={overdue ? 'overdue' : ''}>
+    <div>
       <CardContent>
-        <Typography variant='caption' color='text.secondary' gutterBottom>
+        <Typography
+          variant='caption'
+          color='text.secondary'
+          gutterBottom
+          className='due-date'
+        >
           {dueDate}
+          {overdue ? <Chip size='small' label='overdue' color='error' /> : ''}
         </Typography>
         <Typography variant='h6' component='div'>
           {action.name}

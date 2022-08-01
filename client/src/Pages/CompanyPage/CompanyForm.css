@@ -1,5 +1,18 @@
+form {
+  display: flex;
+  justify-content: center;
+}
+.form-container {
+  padding-top: 16px;
+  width: 40vw;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+}
+
 .form {
-  width: 60vw;
+  width: 40vw;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -8,6 +21,12 @@
   gap: 32px;
   padding: 32px;
   overflow: scroll;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 /* .form-container {
@@ -34,4 +53,10 @@
   margin-left: 0;
   gap: 8px;
   align-items: flex-start;
+}
+
+.MuiFormControlLabel-root {
+  display: flex;
+  justify-content: space-between;
+  width: 40vw;
 }

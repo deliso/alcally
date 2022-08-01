@@ -8,6 +8,9 @@ import FormControl from '@mui/material/FormControl';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import Select from '@mui/material/Select';
 import { Container } from '@mui/system';
+import { Avatar } from '@mui/material';
+import ApartmentIcon from '@mui/icons-material/Apartment';
+import { Person } from '@mui/icons-material';
 
 export const CompanyContext = createContext<any>({});
 
@@ -120,6 +123,10 @@ export const CompanySelection = (props: Props) => {
             <span>ALCALLY</span>
           </div>
           <Box className='selector' sx={{ width: 248 }}>
+            <Avatar variant='circular'>
+              {' '}
+              <ApartmentIcon></ApartmentIcon>
+            </Avatar>
             <FormControl
               fullWidth
               sx={{
@@ -163,7 +170,8 @@ export const CompanySelection = (props: Props) => {
                           to={`/company/#${company.id}`}
                           state={{ company: company }}
                         >
-                          {company.name}, {company.type},{' '}
+                          {company.name}, {company.type}
+                          {company.sole ? 'U' : ''}
                         </Link>
                       </CompanyContext.Provider>
                     </MenuItem>
@@ -175,7 +183,12 @@ export const CompanySelection = (props: Props) => {
               </Select>
             </FormControl>
           </Box>
-          <div className='navbar-item user'>Sergio Morales</div>
+          <div className='navbar-item user'>
+            <span>Sergio Morales</span>
+            <Avatar variant='circular'>
+              <Person></Person>
+            </Avatar>
+          </div>
         </div>
         <Outlet />
       </CompanyContext.Provider>

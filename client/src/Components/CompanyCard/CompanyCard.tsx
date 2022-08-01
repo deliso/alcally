@@ -24,6 +24,7 @@ const CompanyCard = (props: Props) => {
             </Typography>
             <Typography variant='h6' component='div'>
               {company.name},{company.type}
+              {company.sole ? 'U' : ''}
             </Typography>
             <Typography variant='caption' color='text.secondary' gutterBottom>
               NIF

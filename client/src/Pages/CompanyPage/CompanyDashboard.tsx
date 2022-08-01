@@ -44,12 +44,12 @@ const CompanyDashboard = (props: Props) => {
     return filterActions(actions);
   };
 
-  const finalActions: Action[] = sortActions([...company.actions]);
   useEffect(() => {
     const getCompanyById: () => Promise<void> = async () => {
       const companyById = await fetch(`${baseUrl}company/${company.id}`);
       const jsonCompanyById = await companyById.json();
-      setSortedActions([...jsonCompanyById.actions]);
+      const finalActions: Action[] = sortActions([...jsonCompanyById.actions]);
+      setSortedActions([...finalActions]);
     };
     getCompanyById();
   }, []);

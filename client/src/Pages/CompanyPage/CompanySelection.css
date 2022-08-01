@@ -10,7 +10,10 @@
 }
 
 .selector {
-  width: 30vw;
+  display: flex;
+  align-items: center;
+  width: 40vw;
+  gap: 16px;
 }
 
 a {

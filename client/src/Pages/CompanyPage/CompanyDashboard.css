@@ -11,14 +11,14 @@
 }
 
 .cards-container-border {
-  background-color: rgb(227, 228, 228);
+  background-color: rgb(187, 215, 204);
   height: 60vh;
   width: 30vw;
   padding: 16px;
   border-radius: 4px;
 }
 .action-cards-container {
-  background-color: rgb(227, 228, 228);
+  background-color: rgb(187, 215, 204);
   box-sizing: border-box;
   max-height: 60vh;
   width: 30vw;
@@ -26,7 +26,7 @@
   overflow: scroll;
 }
 .company-card-container {
-  background-color: rgb(227, 228, 228);
+  background-color: rgb(187, 215, 204);
   box-sizing: border-box;
   height: 100%;
   width: 30vw;
