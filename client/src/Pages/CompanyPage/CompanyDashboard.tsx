@@ -83,6 +83,10 @@ const CompanyDashboard = (props: Props) => {
         {company ? (
           <div className='dashboard-container'>
             <div className='cards-container-border'>
+              <div className='cards-container-header'>
+                <span>UPCOMING ACTIONS</span>
+                <span>{sortedActions.length}</span>
+              </div>
               <Grid spacing={8} className='action-cards-container'>
                 {sortedActions?.map((action: Action) => (
                   <Item>

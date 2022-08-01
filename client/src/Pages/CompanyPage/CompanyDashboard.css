@@ -36,3 +36,13 @@
 .action-cards-container::-webkit-scrollbar {
   display: none;
 }
+
+.cards-container-header {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  padding-left: 8px;
+  padding-right: 8px;
+  color: rgb(65, 65, 65);
+  font-weight: bold;
+}
