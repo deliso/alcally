@@ -28,7 +28,8 @@ const ActionCardItem = (props: Props) => {
     if (
       dt
         .utc(action.due_year, action.due_month, action.due_day)
-        .toUnixInteger() < dt.now().toUnixInteger()
+        .toUnixInteger() < dt.now().toUnixInteger() &&
+      !action.completed
     ) {
       setOverdue(true);
     }
@@ -43,7 +44,7 @@ const ActionCardItem = (props: Props) => {
           className='due-date'
         >
           {dueDate}
-          {overdue ? <Chip size='small' label='overdue' color='error' /> : ''}
+          {overdue ? <Chip size='small' label='OVERDUE' color='error' /> : ''}
         </Typography>
         <Typography variant='h6' component='div'>
           {action.name}
@@ -51,7 +52,11 @@ const ActionCardItem = (props: Props) => {
       </CardContent>
       <CardActions>
         {action.completed ? (
-          <Button size='small' onClick={() => handleComplete(action.id)}>
+          <Button
+            size='small'
+            color='success'
+            onClick={() => handleComplete(action.id)}
+          >
             Completed
           </Button>
         ) : (

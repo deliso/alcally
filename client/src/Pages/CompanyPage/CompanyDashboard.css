@@ -1,5 +1,5 @@
 .company-dashboard {
-  height: 100vh;
+  height: 100%;
   width: 100vw;
   display: flex;
   align-items: center;
@@ -7,29 +7,32 @@
 }
 .dashboard-container {
   display: flex;
-  gap: 10rem;
+  gap: 128px;
 }
 
 .cards-container-border {
-  background-color: rgb(187, 215, 204);
-  height: 60vh;
-  width: 30vw;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  width: 20vw;
   padding: 16px;
   border-radius: 4px;
 }
 .action-cards-container {
-  background-color: rgb(187, 215, 204);
   box-sizing: border-box;
   max-height: 60vh;
-  width: 30vw;
+  width: 20vw;
+  height: 100%;
   border-radius: 4px;
   overflow: scroll;
 }
-.company-card-container {
-  background-color: rgb(187, 215, 204);
+.director-card-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 60vh;
   box-sizing: border-box;
   height: 100%;
-  width: 30vw;
+  width: 20vw;
   border-radius: 4px;
 }
 
@@ -45,4 +48,8 @@
   padding-right: 8px;
   color: rgb(65, 65, 65);
   font-weight: bold;
+}
+.add-director-button {
+  margin-top: 16px;
+  width: fit-content;
 }

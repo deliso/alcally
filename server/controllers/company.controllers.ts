@@ -25,6 +25,7 @@ const createCompany = async (req: Request, res: Response) => {
   const queryData: any = { ...companyData };
   delete queryData.id;
   queryData.actions = { createMany: { data: companyData.actions } };
+  queryData.directors = { createMany: { data: companyData.directors } };
   console.log('QueryData', queryData);
   try {
     await prisma.company.create({
@@ -53,6 +54,7 @@ const getCompanyById = async (req: Request, res: Response) => {
     where: { id: req.params.id },
     include: {
       actions: true,
+      directors: true,
     },
   });
   res.send(company);
@@ -62,6 +64,7 @@ const getCompanyByName = async (name: string) => {
     where: { name: name },
     include: {
       actions: true,
+      directors: true,
     },
   });
   return company;
