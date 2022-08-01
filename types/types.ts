@@ -34,11 +34,12 @@ class Director {
   appointment_year!: number;
   appointment_month!: number;
   appointment_day!: number;
-  expiry_year!: number;
-  expiry_month!: number;
-  expiry_day!: number;
+  expiry_year?: number;
+  expiry_month?: number;
+  expiry_day?: number;
   nif!: string;
   dir_rem!: boolean;
+  dir_indef!: boolean;
 }
 
 type Category = 'ACCOUNTS' | 'BOOKS' | 'APPOINTMENT';

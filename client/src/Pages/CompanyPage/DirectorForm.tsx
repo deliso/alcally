@@ -1,5 +1,5 @@
 import './CompanyForm.css';
-import { ArrowBack, Send } from '@mui/icons-material';
+import { ArrowBack, Rule, Send } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -20,13 +20,16 @@ import {
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Company } from '../../../../types/types';
+import { Company, Director } from '../../../../types/types';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 type Props = {
   companyId: string;
+  companyBody: string;
+  directors: Director[];
+  setDirectors: any;
   setShowForm: any;
 };
 const theme = createTheme({
@@ -41,49 +44,64 @@ const theme = createTheme({
   },
 });
 
-const CompanySchema = yup.object().shape({
+const DirectorSchema = yup.object().shape({
   name: yup.string().required('Name is required'),
-  type: yup.string().required('Type is required'),
+  surname: yup.string().required('Surname is required'),
+  role: yup.string().required('Type is required'),
   nif: yup.string().required('NIF is required'),
-  cnae: yup
+  appointment_year: yup
     .number()
-    .typeError('CNAE must be a number')
-    .positive('CNAE must be positive')
-    .integer('CNAE must be an integer')
-    .min(1000, 'CNAE must be 4 digits long')
-    .max(9999, 'CNAE must be 4 digits long')
-    .required('CNAE is required'),
-  year_end_month: yup
+    .typeError('Please enter a valid year')
+    .integer('Please enter a valid year')
+    .min(1900, 'Please enter a valid year')
+    .max(2100, 'Please enter a valid year')
+    .required('Year is required'),
+  appointment_month: yup
     .number()
-    .typeError('Month must be a number')
+    .typeError('Please enter a valid month')
     .integer('Please enter a valid month')
     .min(1, 'Please enter a valid month')
     .max(12, 'Please enter a valid month')
     .required('Month is required'),
-  year_end_day: yup
+  appointment_day: yup
     .number()
     .typeError('Day must be a number')
     .integer('Please enter a valid day')
     .min(1, 'Please enter a valid day')
     .max(31, 'Please enter a valid day')
-    .required('Day is required'),
-  sole: yup.boolean().required(),
-  audit: yup.boolean().required(),
-  mgmt: yup.string().required('Management type is required'),
-  mgmt_rem: yup.boolean().required(),
+    .required('Month is required'),
+  expiry_year: yup.string().default('2100'),
+  // .typeError('Please enter a valid year')
+  // .integer('Please enter a valid year')
+  // .min(1900, 'Please enter a valid year')
+  // .max(2100, 'Please enter a valid year'),
+  expiry_month: yup.string().default('12'),
+  // .typeError('Please enter a valid month')
+  // .integer('Please enter a valid month')
+  // .min(1, 'Please enter a valid month')
+  // .max(12, 'Please enter a valid month'),
+  expiry_day: yup.string().default('31'),
+  // .typeError('Day must be a number')
+  // .integer('Please enter a valid day')
+  // .min(1, 'Please enter a valid day')
+  // .max(31, 'Please enter a valid day'),
+  dir_indef: yup.boolean().required(),
+  dir_rem: yup.boolean().required(),
 });
 
 interface ICompanyForm {
   name: string;
-  type: string;
+  surname: string;
+  role: string;
   nif: string;
-  cnae: number;
-  year_end_month: number;
-  year_end_day: number;
-  sole: boolean;
-  audit: number;
-  mgmt: number;
-  mgmt_rem: boolean;
+  appointment_year: number;
+  appointment_month: number;
+  appointment_day: number;
+  expiry_year?: string;
+  expiry_month?: string;
+  expiry_day?: string;
+  dir_indef: boolean;
+  dir_rem: boolean;
 }
 
 // id: string;
@@ -91,9 +109,12 @@ interface ICompanyForm {
 
 const DirectorForm = (props: Props) => {
   const setShowForm = props.setShowForm;
+  const setDirectors = props.setDirectors;
+  const directors = props.directors;
   const id = props.companyId;
+  const body = props.companyBody;
   // const [mgmt, setMgmt] = useState('BOD');
-  // const [type, setType] = useState('SA');
+  const [role, setRole] = useState('DIRECTOR');
   let navigate = useNavigate();
 
   const {
@@ -102,40 +123,43 @@ const DirectorForm = (props: Props) => {
     setValue,
     formState: { errors },
   } = useForm<ICompanyForm>({
-    resolver: yupResolver(CompanySchema),
+    resolver: yupResolver(DirectorSchema),
   });
 
   // const handleMgmt = (event: any) => {
   //   setMgmt(event.target.value);
   //   setValue('mgmt', event.target.value, { shouldValidate: true });
   // };
-  // const handleType = (event: any) => {
-  //   setType(event.target.value);
-  //   setValue('type', event.target.value, { shouldValidate: true });
-  // };
+  const handleRole = (event: any) => {
+    setRole(event.target.value);
+    setValue('role', event.target.value, { shouldValidate: true });
+  };
 
   const onSubmit = async (data: any) => {
     console.log(data);
-    const isValid = await CompanySchema.isValid(data);
+    const isValid = await DirectorSchema.isValid(data);
     if (isValid) {
       try {
-        const inputCompany: Company = {
+        const inputDirector: Director = {
           ...data,
-          actions: [],
           id: '',
+          active: true,
+          expiry_year: Number(data.expiry_year) || 2100,
+          expiry_month: Number(data.expiry_month) || 12,
+          expiry_day: Number(data.expiry_day) || 31,
+          body: body,
         };
-        console.log(inputCompany);
-        const responseCompany = await fetch('http://localhost:3001/company', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(inputCompany),
-        });
-        const jsonCompany = await responseCompany.json();
-        console.log(jsonCompany);
-        navigate(`/company/#${id}`, {
-          replace: true,
-          state: { company: jsonCompany },
-        });
+        const responseDirector = await fetch(
+          `http://localhost:3001/director/${id}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(inputDirector),
+          }
+        );
+        const jsonDirector = await responseDirector.json();
+        setDirectors([...directors, jsonDirector]);
+        setShowForm(false);
       } catch (e) {
         console.log(e);
       }
@@ -158,24 +182,15 @@ const DirectorForm = (props: Props) => {
                   error={!!errors.name}
                   helperText={errors?.name && errors.name.message}
                 />
-                {/* 'TYPE' */}
-                <FormControl fullWidth {...register('type')}>
-                  {/* <InputLabel id='type'>Type</InputLabel> */}
-                  <Select
-                    variant='filled'
-                    labelId='type'
-                    id='type'
-                    // value={type}
-                    label='Type'
-                    // onChange={handleType}
-                    sx={{ 'align-items': 'center' }}
-                  >
-                    <MenuItem value={'SA'}>Sociedad Anónima</MenuItem>
-                    <MenuItem value={'SL'}>Sociedad Limitada</MenuItem>
-                  </Select>
-                </FormControl>
-              </div>
-              <div className='form-row'>
+                {/* 'SURNAME' */}
+                <TextField
+                  variant='filled'
+                  label='Surname'
+                  fullWidth
+                  {...register('surname')}
+                  error={!!errors.surname}
+                  helperText={errors?.surname && errors.surname.message}
+                />
                 {/* 'NIF' */}
                 <TextField
                   variant='filled'
@@ -185,91 +200,121 @@ const DirectorForm = (props: Props) => {
                   error={!!errors.nif}
                   helperText={errors?.nif && errors.nif.message}
                 />
-                {/* 'CNAE' */}
-                <TextField
-                  variant='filled'
-                  label='CNAE'
-                  fullWidth
-                  {...register('cnae')}
-                  error={!!errors.cnae}
-                  helperText={errors?.cnae && errors.cnae.message}
-                />
               </div>
+              {/* 'ROLE' */}
+              <FormControl fullWidth {...register('role')}>
+                {/* <InputLabel id='type'>Type</InputLabel> */}
+                <Select
+                  variant='filled'
+                  labelId='role'
+                  id='role'
+                  value={role}
+                  label='Role'
+                  onChange={handleRole}
+                  sx={{ 'align-items': 'center' }}
+                >
+                  <MenuItem value={'DIRECTOR'}>Director</MenuItem>
+                  <MenuItem value={'CHAIRMAN'}>Chairman</MenuItem>
+                  <MenuItem value={'SECRETARY'}>Secretary</MenuItem>
+                </Select>
+              </FormControl>
 
               <div className='form-row'>
-                {/* 'YEAR-END-MONTH' */}
+                {/* 'APPOINTMENT YEAR' */}
+                <TextField
+                  type='number'
+                  InputProps={{ inputProps: { min: 2000, max: 2100 } }}
+                  variant='filled'
+                  label='Year'
+                  fullWidth
+                  {...register('appointment_year')}
+                  error={!!errors.appointment_year}
+                  helperText={
+                    errors?.appointment_year && errors.appointment_year.message
+                  }
+                />
+                {/* 'APPOINTMENT MONTH' */}
                 <TextField
                   type='number'
                   InputProps={{ inputProps: { min: 1, max: 12 } }}
                   variant='filled'
                   label='Month'
                   fullWidth
-                  {...register('year_end_month')}
-                  error={!!errors.year_end_month}
+                  {...register('appointment_month')}
+                  error={!!errors.appointment_month}
                   helperText={
-                    errors?.year_end_month && errors.year_end_month.message
+                    errors?.appointment_month &&
+                    errors.appointment_month.message
                   }
                 />
-                {/* 'YEAR-END-DAY' */}
+                {/* 'APPOINTMENT-DAY' */}
                 <TextField
                   type='number'
                   InputProps={{ inputProps: { min: 1, max: 31 } }}
                   variant='filled'
                   label='Day'
                   fullWidth
-                  {...register('year_end_day')}
-                  error={!!errors.year_end_day}
+                  {...register('appointment_day')}
+                  error={!!errors.appointment_day}
                   helperText={
-                    errors?.year_end_day && errors.year_end_day.message
+                    errors?.appointment_day && errors.appointment_day.message
                   }
                 />
               </div>
-              {/* 'MGMT' */}
-              <FormControl fullWidth {...register('mgmt')}>
-                {/* <InputLabel id='mgmt'>Management Body</InputLabel> */}
-                <Select
+              <div className='form-row'>
+                {/* 'EXPIRY-YEAR' */}
+                <TextField
+                  type='number'
+                  InputProps={{ inputProps: { min: 2000, max: 2100 } }}
                   variant='filled'
-                  labelId='demo-simple-select-label'
-                  id='demo-simple-select'
-                  // value={mgmt}
-                  label='mgmt'
-                  // onChange={handleMgmt}
-                >
-                  <MenuItem value={'BOD'}>Board of Directors</MenuItem>
-                  <MenuItem value={'J_D'}>Joint Director</MenuItem>
-                  <MenuItem value={'J_S_D'}>
-                    Joint and Several Director
-                  </MenuItem>
-                  <MenuItem value={'S_D'}>Sole Director</MenuItem>
-                </Select>
-              </FormControl>
-              {/* 'SOLE' */}
+                  label='Year'
+                  fullWidth
+                  {...register('expiry_year')}
+                  error={!!errors.expiry_year}
+                  helperText={errors?.expiry_year && errors.expiry_year.message}
+                />
+                {/* 'EXPIRY-MONTH' */}
+                <TextField
+                  type='number'
+                  InputProps={{ inputProps: { min: 1, max: 12 } }}
+                  variant='filled'
+                  label='Month'
+                  fullWidth
+                  {...register('expiry_month')}
+                  error={!!errors.expiry_month}
+                  helperText={
+                    errors?.expiry_month && errors.expiry_month.message
+                  }
+                />
+                {/* 'EXPIRY-DAY' */}
+                <TextField
+                  type='number'
+                  InputProps={{ inputProps: { min: 1, max: 31 } }}
+                  variant='filled'
+                  label='Day'
+                  fullWidth
+                  {...register('expiry_day')}
+                  error={!!errors.expiry_day}
+                  helperText={errors?.expiry_day && errors.expiry_day.message}
+                />
+              </div>
+              {/* 'DIR_REM' */}
               <div className='switch'>
                 <FormControlLabel
-                  id='sole'
-                  label='Is the Company owned by a sole shareholder?'
+                  id='dir_indef'
+                  label='Was the director appointed for an indefinite period?'
                   labelPlacement='start'
-                  control={<Switch {...register('sole')} size='medium' />}
+                  control={<Switch {...register('dir_indef')} size='medium' />}
                   sx={{ 'margin-left': '0px' }}
                 />
               </div>
-              {/* 'AUDIT' */}
+              {/* 'DIR_REM' */}
               <div className='switch'>
                 <FormControlLabel
-                  id='audit'
-                  label='Does the company audit its annual accounts?'
+                  id='dir_rem'
+                  label='Does the director receive remuneration?'
                   labelPlacement='start'
-                  control={<Switch {...register('audit')} size='medium' />}
-                  sx={{ 'margin-left': '0px' }}
-                />
-              </div>
-              {/* 'MGMT_REM' */}
-              <div className='switch'>
-                <FormControlLabel
-                  id='mgmt_rem'
-                  label='Do the director/s receive remuneration?'
-                  labelPlacement='start'
-                  control={<Switch {...register('mgmt_rem')} size='medium' />}
+                  control={<Switch {...register('dir_rem')} size='medium' />}
                   sx={{ 'margin-left': '0px' }}
                 />
               </div>

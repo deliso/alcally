@@ -68,11 +68,15 @@ const CompanyDashboard = (props: Props) => {
         return action;
       }
     );
+  };
+  const handleRemove = async (id: string) => {
+    const updatedDirectors: Director[] = [...directors].filter((director) => {
+      return director.id !== id;
+    });
 
-    setSortedActions([...updatedActions]);
-    company.actions = [...updatedActions];
-    const completeReq = await fetch(`http://localhost:3001/complete/${id}`, {
-      method: 'PUT',
+    setDirectors([...updatedDirectors]);
+    const removeReq = await fetch(`http://localhost:3001/director/${id}`, {
+      method: 'DELETE',
     });
   };
   const handleAddDirector = () => {
@@ -89,7 +93,10 @@ const CompanyDashboard = (props: Props) => {
     <>
       {showForm ? (
         <DirectorForm
+          directors={directors}
+          setDirectors={setDirectors}
           companyId={company.id}
+          companyBody={company.mgmt}
           setShowForm={setShowForm}
         ></DirectorForm>
       ) : (
@@ -136,6 +143,7 @@ const CompanyDashboard = (props: Props) => {
                             <DirectorCard
                               key={director.id}
                               director={director}
+                              handleRemove={handleRemove}
                             ></DirectorCard>
                           </Item>
                         );

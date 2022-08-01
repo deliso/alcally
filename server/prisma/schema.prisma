@@ -80,9 +80,10 @@ model Director {
   appointment_day       Int
   expiry_year           Int
   expiry_month          Int
-  expiry_day            Int 
+  expiry_day            Int
   nif                   String @unique
   dir_rem   Boolean
+  dir_indef   Boolean
 }
 
 enum Type {

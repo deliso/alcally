@@ -9,10 +9,12 @@ import { Director } from '../../../../types/types';
 
 type Props = {
   director: Director;
+  handleRemove: any;
 };
 
 const DirectorCard = (props: Props) => {
   const director: Director = props.director;
+  const handleRemove = props.handleRemove;
   // const [overdue, setOverdue] = useState(false);
   // const dt = DateTime;
   // const action: Action = props.action;
@@ -54,7 +56,9 @@ const DirectorCard = (props: Props) => {
         >
           Renew
         </Button>
-        <Button size='small'>Remove</Button>
+        <Button onClick={() => handleRemove(director.id)()} size='small'>
+          Remove
+        </Button>
       </CardActions>
     </div>
   );
