@@ -18,6 +18,7 @@ const DirectorCard = (props: Props) => {
   const director: Director = props.director;
   const handleRemove = props.handleRemove;
   const [progress, setProgress] = useState<number>(100);
+  const [days, setDays] = useState<number>(0);
 
   const dt = DateTime;
   // const action: Action = props.action;
@@ -26,24 +27,17 @@ const DirectorCard = (props: Props) => {
   //   .utc(action.due_year, action.due_month, action.due_day)
   //   .toFormat('MMMM dd, yyyy');
   useEffect(() => {
-    if (
-      director.expiry_year &&
-      director.expiry_month &&
-      director.expiry_day &&
-      dt
-        .utc(director.expiry_year, director.expiry_month, director.expiry_day)
-        .toUnixInteger() <
-        dt.now().toUnixInteger() + 31536000
-    ) {
+    if (director.expiry_year && director.expiry_month && director.expiry_day) {
       const remainingTime =
-        dt.now().toUnixInteger() +
-        31536000 -
         dt
           .utc(director.expiry_year, director.expiry_month, director.expiry_day)
-          .toUnixInteger();
-      const remainingDays = remainingTime / 86400;
-      const progressOutput = (remainingDays / 100) * 10;
-      setProgress(progressOutput);
+          .toUnixInteger() - dt.now().toUnixInteger();
+      const remainingDays = Math.floor(remainingTime / 86400);
+      setDays(remainingDays);
+      if (remainingTime < 31536000) {
+        const progressOutput = (remainingDays / 100) * 10;
+        setProgress(progressOutput);
+      }
     }
   }, []);
   const card = (
@@ -55,7 +49,7 @@ const DirectorCard = (props: Props) => {
           gutterBottom
           className='due-date'
         >
-          Director
+          {director.role}
         </Typography>
         <Typography variant='h6' component='div' gutterBottom>
           {director.name} {director.surname}
@@ -65,7 +59,7 @@ const DirectorCard = (props: Props) => {
           color='text.secondary'
           className='due-date'
         >
-          Expires in 10 days
+          Expires in {days} days
         </Typography>
         <LinearProgress variant='determinate' value={progress} />
       </CardContent>

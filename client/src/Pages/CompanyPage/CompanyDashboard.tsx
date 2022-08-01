@@ -89,6 +89,11 @@ const CompanyDashboard = (props: Props) => {
         return action;
       }
     );
+    setSortedActions([...updatedActions]);
+    company.actions = [...updatedActions];
+    const completeReq = await fetch(`http://localhost:3001/complete/${id}`, {
+      method: 'PUT',
+    });
   };
   const handleRemove = async (id: string) => {
     const updatedDirectors: Director[] = [...directors].filter((director) => {
