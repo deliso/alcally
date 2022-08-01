@@ -29,4 +29,7 @@ a {
 }
 .navbar-item {
   width: 10vw;
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }

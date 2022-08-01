@@ -17,9 +17,10 @@ const CompanyDashboard = (props: Props) => {
   const location = useLocation();
   // const [company, setCompany] = useState<Company>();
   const [sortedActions, setSortedActions] = useState<Action[]>([]);
-  const [complete, setComplete] = useState<boolean>(false);
+  // const [complete, setComplete] = useState<boolean>(false);
   const state = location.state as any;
   const company: Company = state.company;
+  console.log('not working', company);
   const id: string = company.id;
   const dt = DateTime;
   const currentTime = new Date(Date.now());
@@ -45,7 +46,12 @@ const CompanyDashboard = (props: Props) => {
 
   const finalActions: Action[] = sortActions([...company.actions]);
   useEffect(() => {
-    setSortedActions([...finalActions]);
+    const getCompanyById: () => Promise<void> = async () => {
+      const companyById = await fetch(`${baseUrl}company/${company.id}`);
+      const jsonCompanyById = await companyById.json();
+      setSortedActions([...jsonCompanyById.actions]);
+    };
+    getCompanyById();
   }, []);
   const handleComplete = async (id: string) => {
     const updatedActions: Action[] = [...sortedActions].map(
@@ -57,8 +63,10 @@ const CompanyDashboard = (props: Props) => {
         return action;
       }
     );
+
     setSortedActions([...updatedActions]);
-    await fetch(`http://localhost:3001/complete/${id}`, {
+    company.actions = [...updatedActions];
+    const completeReq = await fetch(`http://localhost:3001/complete/${id}`, {
       method: 'PUT',
     });
   };
@@ -81,7 +89,7 @@ const CompanyDashboard = (props: Props) => {
                     <ActionCardItem
                       key={action.id}
                       action={action}
-                      complete={complete}
+                      // complete={complete}
                       handleComplete={handleComplete}
                     ></ActionCardItem>
                   </Item>

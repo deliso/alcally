@@ -11,7 +11,7 @@ const { DateTime } = require('luxon');
 type Props = {
   key: string | number | undefined;
   action: Action;
-  complete: boolean;
+  // complete: boolean;
   handleComplete: any;
 };
 

@@ -14,7 +14,6 @@ type Props = {
 const CompanyCard = (props: Props) => {
   // const company = useContext(selectedCompany) as Company;
   const company = props.company;
-  console.log(company);
   const card = (
     <>
       {company ? (
