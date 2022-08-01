@@ -102,6 +102,9 @@ const CompanyDashboard = (props: Props) => {
             </div>
             <div className='cards-container-border'>
               <Box className='company-card-container'>
+                <div className='cards-container-header'>
+                  <span>COMPANY DETAILS</span>
+                </div>
                 <CompanyCard company={company}></CompanyCard>
               </Box>
             </div>

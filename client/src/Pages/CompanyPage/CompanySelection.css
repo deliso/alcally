@@ -3,6 +3,11 @@
   height: 100vh;
   flex-direction: column;
   padding: 8px;
+  background-image: url('https://images.blush.design/A0lZAnpSJ42xF4cfTc1z?w=original&cs=srgb');
+  background-color: rgba(0, 0, 0, 0);
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center bottom;
 }
 
 #company-select {
@@ -36,4 +41,9 @@ a {
   display: flex;
   align-items: center;
   gap: 16px;
+}
+
+img {
+  position: absolute;
+  top: 0%;
 }
