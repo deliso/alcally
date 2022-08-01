@@ -1,4 +1,4 @@
-import { Action, Company, Director } from '../../../../types/types';
+import { Action, Company, Director, Body } from '../../../../types/types';
 import './CompanyDashboard.css';
 import { useLocation } from 'react-router-dom';
 import Box from '@mui/material/Box';
@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import DirectorCard from '../../Components/DirectorCards/DirectorCard';
 import { Link } from 'react-router-dom';
 import DirectorForm from './DirectorForm';
+import { SettingsSystemDaydreamTwoTone } from '@mui/icons-material';
 const { DateTime } = require('luxon');
 
 type Props = {};
@@ -21,6 +22,7 @@ const CompanyDashboard = (props: Props) => {
   // const [company, setCompany] = useState<Company>();
   const [sortedActions, setSortedActions] = useState<Action[]>([]);
   const [directors, setDirectors] = useState<Director[]>([]);
+  const [mgmt, setMgmt] = useState<string>('');
   const [showForm, setShowForm] = useState<boolean>(false);
   // const [complete, setComplete] = useState<boolean>(false);
   const state = location.state as any;
@@ -48,6 +50,23 @@ const CompanyDashboard = (props: Props) => {
     return filterActions(actions);
   };
 
+  const parseMgmt = (body: string) => {
+    if (body === 'BOD') {
+      return 'BOARD OF DIRECTORS';
+    }
+    if (body === 'J_D') {
+      return 'JOINT DIRECTORS DIRECTORS';
+    }
+    if (body === 'J_S_D') {
+      return 'JOINT AND SEVERAL DIRECTORS';
+    }
+    if (body === 'S_D') {
+      return 'SOLE DIRECTOR';
+    } else {
+      return body;
+    }
+  };
+
   useEffect(() => {
     const getCompanyById: () => Promise<void> = async () => {
       const companyById = await fetch(`${baseUrl}company/${company.id}`);
@@ -55,6 +74,8 @@ const CompanyDashboard = (props: Props) => {
       const finalActions: Action[] = sortActions([...jsonCompanyById.actions]);
       setSortedActions([...finalActions]);
       setDirectors([...jsonCompanyById.directors]);
+      const parsedMgmt = parseMgmt(company.mgmt);
+      setMgmt(parsedMgmt);
     };
     getCompanyById();
   }, []);
@@ -125,7 +146,7 @@ const CompanyDashboard = (props: Props) => {
                 <div className='cards-container-border'>
                   <Box className='director-card-container'>
                     <div className='cards-container-header'>
-                      <span>DIRECTORS</span>
+                      <span>{mgmt}</span>
 
                       <Button
                         className='add-director-button'

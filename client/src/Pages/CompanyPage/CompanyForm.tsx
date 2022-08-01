@@ -73,6 +73,7 @@ const CompanySchema = yup.object().shape({
   audit: yup.boolean().required(),
   mgmt: yup.string().required('Management type is required'),
   mgmt_rem: yup.boolean().required(),
+  mgmt_num: yup.number().required(),
 });
 
 interface ICompanyForm {
@@ -86,6 +87,7 @@ interface ICompanyForm {
   audit: number;
   mgmt: number;
   mgmt_rem: boolean;
+  mgmt_num: number;
 }
 
 // id: string;
@@ -120,6 +122,7 @@ const CompanyForm = (props: Props) => {
         const inputCompany: Company = {
           ...data,
           actions: [],
+          directors: [],
           id: '',
         };
         console.log(inputCompany);
@@ -241,25 +244,38 @@ const CompanyForm = (props: Props) => {
                   }
                 />
               </div>
-              {/* 'MGMT' */}
-              <FormControl fullWidth {...register('mgmt')}>
-                {/* <InputLabel id='mgmt'>Management Body</InputLabel> */}
-                <Select
+              <div className='form-row'>
+                {/* 'MGMT' */}
+                <FormControl fullWidth {...register('mgmt')}>
+                  {/* <InputLabel id='mgmt'>Management Body</InputLabel> */}
+                  <Select
+                    variant='filled'
+                    labelId='demo-simple-select-label'
+                    id='demo-simple-select'
+                    value={mgmt}
+                    label='mgmt'
+                    onChange={handleMgmt}
+                  >
+                    <MenuItem value={'BOD'}>Board of Directors</MenuItem>
+                    <MenuItem value={'J_D'}>Joint Director</MenuItem>
+                    <MenuItem value={'J_S_D'}>
+                      Joint and Several Director
+                    </MenuItem>
+                    <MenuItem value={'S_D'}>Sole Director</MenuItem>
+                  </Select>
+                </FormControl>
+                {/* 'MGMT_NUM' */}
+                <TextField
+                  type='number'
+                  InputProps={{ inputProps: { min: 1, max: 10 } }}
                   variant='filled'
-                  labelId='demo-simple-select-label'
-                  id='demo-simple-select'
-                  value={mgmt}
-                  label='mgmt'
-                  onChange={handleMgmt}
-                >
-                  <MenuItem value={'BOD'}>Board of Directors</MenuItem>
-                  <MenuItem value={'J_D'}>Joint Director</MenuItem>
-                  <MenuItem value={'J_S_D'}>
-                    Joint and Several Director
-                  </MenuItem>
-                  <MenuItem value={'S_D'}>Sole Director</MenuItem>
-                </Select>
-              </FormControl>
+                  label='Number of Directors'
+                  fullWidth
+                  {...register('mgmt_num')}
+                  error={!!errors.mgmt_num}
+                  helperText={errors?.mgmt_num && errors.mgmt_num.message}
+                />
+              </div>
               {/* 'SOLE' */}
               <div className='switch'>
                 <FormControlLabel

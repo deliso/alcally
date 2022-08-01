@@ -95,4 +95,4 @@ class Action {
   }
 }
 
-export { User, Company, Action, Director };
+export { User, Company, Action, Director, Body };

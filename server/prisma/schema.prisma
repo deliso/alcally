@@ -73,7 +73,7 @@ model Director {
   role     Role
   body      Body
   active    Boolean
-  company   Company @relation(fields: [companyId], references: [id])
+  company   Company @relation(fields: [companyId], references: [id],onDelete: Cascade)
   companyId   String
   appointment_year      Int
   appointment_month     Int
