@@ -9,6 +9,8 @@ import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import { useEffect, useState } from 'react';
 import DirectorCard from '../../Components/DirectorCards/DirectorCard';
+import { Link } from 'react-router-dom';
+import DirectorForm from './DirectorForm';
 const { DateTime } = require('luxon');
 
 type Props = {};
@@ -19,6 +21,7 @@ const CompanyDashboard = (props: Props) => {
   // const [company, setCompany] = useState<Company>();
   const [sortedActions, setSortedActions] = useState<Action[]>([]);
   const [directors, setDirectors] = useState<Director[]>([]);
+  const [showForm, setShowForm] = useState<boolean>(false);
   // const [complete, setComplete] = useState<boolean>(false);
   const state = location.state as any;
   const company: Company = state.company;
@@ -72,6 +75,9 @@ const CompanyDashboard = (props: Props) => {
       method: 'PUT',
     });
   };
+  const handleAddDirector = () => {
+    setShowForm(true);
+  };
   const Item = styled(Paper)(() => ({
     'background-color': 'transparent',
     height: '100%',
@@ -81,64 +87,78 @@ const CompanyDashboard = (props: Props) => {
   }));
   return (
     <>
-      <div className='company-dashboard'>
-        {company ? (
-          <div className='dashboard-container'>
-            <div className='cards-container-border'>
-              <div className='cards-container-header'>
-                <span>UPCOMING ACTIONS</span>
-                <span>{sortedActions.length}</span>
-              </div>
-              <Grid spacing={8} className='action-cards-container'>
-                {sortedActions?.map((action: Action) => (
-                  <Item>
-                    <ActionCardItem
-                      key={action.id}
-                      action={action}
-                      // complete={complete}
-                      handleComplete={handleComplete}
-                    ></ActionCardItem>
-                  </Item>
-                ))}
-              </Grid>
-            </div>
-            <div className='cards-container-border'>
-              <Box className='director-card-container'>
-                <div className='cards-container-header'>
-                  <span>DIRECTORS</span>
-                  <Button className='add-director-button' variant='contained'>
-                    ADD DIRECTOR
-                  </Button>
-                </div>
-                <Grid spacing={8} className='director-cards-container'>
-                  {directors.map((director: Director) => {
-                    console.log(director);
-                    return (
+      {showForm ? (
+        <DirectorForm
+          companyId={company.id}
+          setShowForm={setShowForm}
+        ></DirectorForm>
+      ) : (
+        <>
+          <div className='company-dashboard'>
+            {company ? (
+              <div className='dashboard-container'>
+                <div className='cards-container-border'>
+                  <div className='cards-container-header'>
+                    <span>UPCOMING ACTIONS</span>
+                    <span>{sortedActions.length}</span>
+                  </div>
+                  <Grid spacing={8} className='action-cards-container'>
+                    {sortedActions?.map((action: Action) => (
                       <Item>
-                        <DirectorCard
-                          key={director.id}
-                          director={director}
-                        ></DirectorCard>
+                        <ActionCardItem
+                          key={action.id}
+                          action={action}
+                          // complete={complete}
+                          handleComplete={handleComplete}
+                        ></ActionCardItem>
                       </Item>
-                    );
-                  })}
-                </Grid>
-              </Box>
-            </div>
-            <div className='cards-container-border'>
-              <Box className='company-card-container'>
-                <div className='cards-container-header'>
-                  <span>COMPANY DETAILS</span>
+                    ))}
+                  </Grid>
                 </div>
-                <CompanyCard company={company}></CompanyCard>
-              </Box>
-            </div>
+                <div className='cards-container-border'>
+                  <Box className='director-card-container'>
+                    <div className='cards-container-header'>
+                      <span>DIRECTORS</span>
+
+                      <Button
+                        className='add-director-button'
+                        variant='contained'
+                        onClick={handleAddDirector}
+                      >
+                        ADD DIRECTOR
+                      </Button>
+                    </div>
+                    <Grid spacing={8} className='director-cards-container'>
+                      {directors.map((director: Director) => {
+                        console.log(director);
+                        return (
+                          <Item>
+                            <DirectorCard
+                              key={director.id}
+                              director={director}
+                            ></DirectorCard>
+                          </Item>
+                        );
+                      })}
+                    </Grid>
+                  </Box>
+                </div>
+                <div className='cards-container-border'>
+                  <Box className='company-card-container'>
+                    <div className='cards-container-header'>
+                      <span>COMPANY DETAILS</span>
+                    </div>
+                    <CompanyCard company={company}></CompanyCard>
+                  </Box>
+                </div>
+              </div>
+            ) : (
+              'Select or create a company'
+            )}
           </div>
-        ) : (
-          'Select or create a company'
-        )}
-      </div>
-      <></>
+          <></>
+        </>
+      )}
     </>
   );
 };

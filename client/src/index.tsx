@@ -6,6 +6,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import CompanyDashboard from './Pages/CompanyPage/CompanyDashboard';
 import CompanyForm from './Pages/CompanyPage/CompanyForm';
+import DirectorForm from './Pages/CompanyPage/DirectorForm';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -15,7 +16,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<App />}>
-          <Route path='company' element={<CompanyDashboard />} />
+          <Route path='company' element={<CompanyDashboard />}></Route>
           <Route path='create' element={<CompanyForm />} />
         </Route>
       </Routes>
