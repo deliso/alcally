@@ -1,6 +1,7 @@
 import './CompanyForm.css';
 import {
   ArrowBack,
+  ArrowForward,
   Send,
   SystemSecurityUpdateSharp,
 } from '@mui/icons-material';
@@ -311,6 +312,7 @@ const CompanyForm = (props: Props) => {
                   onClick={() => {}}
                   size='small'
                   variant='outlined'
+                  color='primary'
                   startIcon={<ArrowBack />}
                 >
                   <Link to={'/'}>Cancel</Link>
@@ -318,8 +320,8 @@ const CompanyForm = (props: Props) => {
                 <Button
                   type='submit'
                   size='small'
-                  variant='contained'
-                  endIcon={<Send />}
+                  variant='outlined'
+                  endIcon={<ArrowForward />}
                 >
                   Submit
                 </Button>

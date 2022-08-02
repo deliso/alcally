@@ -20,6 +20,7 @@ export const CompanySelection = (props: Props) => {
   const [companies, setCompanies] = useState<Company[]>([]);
   const [selectedCompany, setSelectedCompany] = useState<Company | null>();
   const [create, setCreate] = useState<boolean>(false);
+  const [showWelcome, setShowWelcome] = useState<boolean>(true);
   // const [completed, setCompleted] = useState<boolean>(false);
   // const locationState = {
   //   company: selectedCompany,
@@ -33,6 +34,7 @@ export const CompanySelection = (props: Props) => {
       (company) => company.id === e.target.value
     );
     setSelectedCompany(selectedCompany[0]);
+    setShowWelcome(false);
   };
   const location = useLocation();
   useEffect(() => {
@@ -50,86 +52,18 @@ export const CompanySelection = (props: Props) => {
       <div className='company-selection'>
         <CompanyContext.Provider value={selectedCompany}>
           <div className='navbar'>
-            <div className='navbar-item logo'>
-              <Link to={`/`}>
-                <svg
-                  width='38'
-                  height='38'
-                  viewBox='0 0 38 38'
-                  fill='none'
-                  xmlns='http://www.w3.org/2000/svg'
-                >
-                  <g filter='url(#filter0_d_155_2647)'>
-                    <circle cx='19' cy='18' r='18' fill='#115D5E' />
-                  </g>
-                  <path
-                    d='M26.2371 24.0122L18.688 12.8202'
-                    stroke='white'
-                    stroke-width='2.25'
-                  />
-                  <path
-                    d='M18.885 12.6205L11.3359 23.8126'
-                    stroke='white'
-                    stroke-width='2.25'
-                  />
-                  <path
-                    d='M14.2221 26.6114C14.2221 26.6114 9.821 24.5586 8.12509 20.8056'
-                    stroke='white'
-                    stroke-width='2.25'
-                    stroke-linejoin='round'
-                  />
-                  <path
-                    d='M29.7099 21.8838C29.7099 21.8838 26.6534 25.6576 22.6015 26.3952'
-                    stroke='white'
-                    stroke-width='2.25'
-                  />
-                  <circle cx='19.0256' cy='12.75' r='4.5' fill='white' />
-                  <defs>
-                    <filter
-                      id='filter0_d_155_2647'
-                      x='0.25'
-                      y='0'
-                      width='37.5'
-                      height='37.5'
-                      filterUnits='userSpaceOnUse'
-                      color-interpolation-filters='sRGB'
-                    >
-                      <feFlood flood-opacity='0' result='BackgroundImageFix' />
-                      <feColorMatrix
-                        in='SourceAlpha'
-                        type='matrix'
-                        values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0'
-                        result='hardAlpha'
-                      />
-                      <feOffset dy='0.75' />
-                      <feGaussianBlur stdDeviation='0.375' />
-                      <feComposite in2='hardAlpha' operator='out' />
-                      <feColorMatrix
-                        type='matrix'
-                        values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
-                      />
-                      <feBlend
-                        mode='normal'
-                        in2='BackgroundImageFix'
-                        result='effect1_dropShadow_155_2647'
-                      />
-                      <feBlend
-                        mode='normal'
-                        in='SourceGraphic'
-                        in2='effect1_dropShadow_155_2647'
-                        result='shape'
-                      />
-                    </filter>
-                  </defs>
-                </svg>
-              </Link>
-              <span>ALCALLY</span>
-            </div>
-            <Box className='selector' sx={{ width: 248 }}>
-              <Avatar variant='circular'>
-                {' '}
-                <ApartmentIcon></ApartmentIcon>
-              </Avatar>
+            <Link to={`/`}>
+              <div className='navbar-item logo'>
+                <img src={require('./../../Assets/logo.png')} alt='logo'></img>
+              </div>
+            </Link>
+            <Box className='selector' sx={{ width: 284 }}>
+              {' '}
+              <img
+                className='company-logo'
+                src='https://images.blush.design/mDnbV7zwvAFvfp85E0QG?w=original&cs=srgb'
+                alt='company-logo'
+              ></img>
               <FormControl
                 fullWidth
                 sx={{
@@ -189,20 +123,34 @@ export const CompanySelection = (props: Props) => {
                 </Select>
               </FormControl>
             </Box>
+
             <div className='navbar-item user'>
-              <span>Sergio Morales</span>
-              <Avatar variant='circular'>
-                <Person></Person>
-              </Avatar>
+              <img
+                className='user-avatar'
+                src='https://blush-design.imgix.net/collections/rChdrB8vX8xQJunpDPp8/v16/Master/Avataaar/cropped/Default.svg?w=original&cs=srgb'
+                alt='logo'
+              ></img>
             </div>
           </div>
           <Outlet />
         </CompanyContext.Provider>
       </div>
-      {/* <img
+      {showWelcome ? (
+        <div className='main-text'>
+          <div className='app-name'>ALCALLY</div>
+          <div className='app-text'>
+            Stay on top of your company's management needs and keep track of all
+            legal requirements in one place.
+          </div>
+        </div>
+      ) : (
+        ''
+      )}
+      <img
+        className={showWelcome ? 'background-image' : 'background-image-blur'}
         src='https://images.blush.design/A0lZAnpSJ42xF4cfTc1z?w=original&cs=srgb'
-        alt='downtown'
-      /> */}
+        alt='background'
+      ></img>
     </div>
   );
 };

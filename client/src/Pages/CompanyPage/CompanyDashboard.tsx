@@ -133,7 +133,6 @@ const CompanyDashboard = (props: Props) => {
                 <div className='cards-container-border'>
                   <div className='cards-container-header'>
                     <span>UPCOMING ACTIONS</span>
-                    <span>{sortedActions.length}</span>
                   </div>
                   <Grid spacing={8} className='action-cards-container'>
                     {sortedActions?.map((action: Action) => (
@@ -150,7 +149,7 @@ const CompanyDashboard = (props: Props) => {
                 </div>
                 <div className='cards-container-border'>
                   <Box className='director-card-container'>
-                    <div className='cards-container-header'>
+                    <div className='cards-container-header director-header'>
                       <span>{mgmt}</span>
 
                       <Button

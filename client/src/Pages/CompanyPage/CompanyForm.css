@@ -9,6 +9,7 @@ form {
   flex-direction: column;
   gap: 16px;
   text-align: left;
+  z-index: 12;
 }
 
 .form {
