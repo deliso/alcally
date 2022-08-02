@@ -4,18 +4,20 @@ import { Avatar, Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import LoginForm from '../LoginPage/LoginForm';
 import { Person } from '@mui/icons-material';
+import { signInWithGoogle } from '../../Firebase';
 
 type Props = {
-  isLoggedIn: boolean;
-  setIsLoggedIn: any;
+  isAuthenticated: boolean;
+  setIsAuthenticated: any;
 };
 export const LandingPage = (props: Props) => {
-  const isLoggedIn = props.isLoggedIn;
-  const setIsLoggedIn = props.setIsLoggedIn;
+  const isAuthenticated = props.isAuthenticated;
+  const setIsAuthenticated = props.setIsAuthenticated;
   const navigate = useNavigate();
   const [landing, setLanding] = useState(false);
+  const [userData, setUserData] = useState<any>('');
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isAuthenticated) {
       setLanding(true);
     }
   }, []);
@@ -24,8 +26,20 @@ export const LandingPage = (props: Props) => {
     navigate('/', { replace: true });
   };
   const handleClick = () => {
-    setLanding(false);
+    console.log('click');
+    signInWithGoogle();
+    const newData: any = localStorage.getItem('userData');
+    const jsonData: any = JSON.parse(newData);
+    setUserData(jsonData);
+    console.log(jsonData);
+    setIsAuthenticated(true);
+    // setLanding(false);
   };
+  useEffect(() => {
+    const userInfo: any = localStorage.getItem('userData');
+    const jsonUser: any = JSON.parse(userInfo);
+    if (jsonUser) setIsAuthenticated(true);
+  }, []);
 
   return (
     <div className='app-container'>
@@ -38,45 +52,42 @@ export const LandingPage = (props: Props) => {
           <img src={require('./../../Assets/logo3.png')} alt='logo'></img>
         </button>
 
-        {isLoggedIn ? (
+        {isAuthenticated ? (
           <div className='navbar-item user'>
             <Avatar variant='circular' sx={{ bgcolor: '#6363f7' }}>
+              <img src={userData.photoURL} alt='' />
               <Person sx={{ bgcolor: '#6363f7' }} />
             </Avatar>
           </div>
         ) : (
           <div className='navbar-item login'>
             <Button onClick={handleClick} variant='contained'>
-              Log in
+              Sign in
             </Button>
           </div>
         )}
       </nav>
 
       <div>
-        {landing ? (
-          <div>
-            <div className='main-text'>
-              <div className='app-name'>ALCALLY</div>
-              <div className='app-text'>
-                Stay on top of your company's management needs and keep track of
-                legal requirements ...all in one place.
-              </div>
+        <div>
+          <div className='main-text'>
+            <div className='app-name'>ALCALLY</div>
+            <div className='app-text'>
+              Stay on top of your company's management needs and keep track of
+              legal requirements ...all in one place.
             </div>
-            <img
-              className='background-image'
-              src='https://images.blush.design/A0lZAnpSJ42xF4cfTc1z?w=original&cs=srgb'
-              alt='background'
-            ></img>
-            <img
-              className='person-image'
-              src='https://images.blush.design/f30508bc8fe32d732eabffdd23d7e835?w=original&cs=srgb'
-              alt='person'
-            ></img>
           </div>
-        ) : (
-          <LoginForm setIsLoggedIn={setIsLoggedIn}></LoginForm>
-        )}
+          <img
+            className='background-image'
+            src='https://images.blush.design/A0lZAnpSJ42xF4cfTc1z?w=original&cs=srgb'
+            alt='background'
+          ></img>
+          <img
+            className='person-image'
+            src='https://images.blush.design/f30508bc8fe32d732eabffdd23d7e835?w=original&cs=srgb'
+            alt='person'
+          ></img>
+        </div>
       </div>
       <Outlet />
     </div>

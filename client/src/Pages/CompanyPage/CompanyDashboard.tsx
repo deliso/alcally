@@ -24,6 +24,22 @@ const { DateTime } = require('luxon');
 
 //create Type for location.state
 type Props = {};
+export const parseMgmt = (body: string) => {
+  if (body === 'BOD') {
+    return 'BOARD OF DIRECTORS';
+  }
+  if (body === 'J_D') {
+    return 'JOINT DIRECTORS DIRECTORS';
+  }
+  if (body === 'J_S_D') {
+    return 'JOINT AND SEVERAL DIRECTORS';
+  }
+  if (body === 'S_D') {
+    return 'SOLE DIRECTOR';
+  } else {
+    return body;
+  }
+};
 
 const CompanyDashboard = (props: Props) => {
   //apiService
@@ -34,6 +50,8 @@ const CompanyDashboard = (props: Props) => {
   const [directors, setDirectors] = useState<Director[]>([]);
   const [mgmt, setMgmt] = useState<string>('');
   const [showForm, setShowForm] = useState<boolean>(false);
+  const [maxDir, setMaxDir] = useState<boolean>(false);
+
   // const [complete, setComplete] = useState<boolean>(false);
   const state = location.state as any;
   const company: Company = state.company;
@@ -60,22 +78,6 @@ const CompanyDashboard = (props: Props) => {
     return filterActions(actions);
   };
   //switch-case
-  const parseMgmt = (body: string) => {
-    if (body === 'BOD') {
-      return 'BOARD OF DIRECTORS';
-    }
-    if (body === 'J_D') {
-      return 'JOINT DIRECTORS DIRECTORS';
-    }
-    if (body === 'J_S_D') {
-      return 'JOINT AND SEVERAL DIRECTORS';
-    }
-    if (body === 'S_D') {
-      return 'SOLE DIRECTOR';
-    } else {
-      return body;
-    }
-  };
 
   useEffect(() => {
     const getCompanyById: () => Promise<void> = async () => {
@@ -91,6 +93,13 @@ const CompanyDashboard = (props: Props) => {
     };
     getCompanyById();
   }, []);
+
+  useEffect(() => {
+    if (directors.length === company.mgmt_num) {
+      setMaxDir(true);
+    }
+  }, [directors]);
+
   const handleComplete = async (id: string) => {
     const updatedActions: Action[] = [...sortedActions].map(
       (action: Action) => {
@@ -168,6 +177,7 @@ const CompanyDashboard = (props: Props) => {
                         className='add-director-button'
                         variant='contained'
                         onClick={handleAddDirector}
+                        disabled={maxDir}
                       >
                         ADD DIRECTOR
                       </Button>
@@ -181,6 +191,7 @@ const CompanyDashboard = (props: Props) => {
                               <Item>
                                 <DirectorCard
                                   key={director.id}
+                                  company={company}
                                   director={director}
                                   handleRemove={handleRemove}
                                 ></DirectorCard>

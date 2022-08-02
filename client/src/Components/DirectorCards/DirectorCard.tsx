@@ -5,16 +5,18 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useContext, useEffect, useState } from 'react';
-import { Director } from '../../../../types/types';
+import { Company, Director } from '../../../../types/types';
 import { LinearProgress } from '@mui/material';
 import { DateTime } from 'luxon';
 
 type Props = {
   director: Director;
+  company: Company;
   handleRemove: any;
 };
 
 const DirectorCard = (props: Props) => {
+  const company: Company = props.company;
   const director: Director = props.director;
   const handleRemove = props.handleRemove;
   const [progress, setProgress] = useState<number>(100);

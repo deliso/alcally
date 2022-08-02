@@ -222,7 +222,7 @@ const CompanyForm = (props: Props) => {
                   type='number'
                   InputProps={{ inputProps: { min: 1, max: 12 } }}
                   variant='filled'
-                  label='Month'
+                  label='End of Tax Year (Month)'
                   fullWidth
                   {...register('year_end_month')}
                   error={!!errors.year_end_month}
@@ -235,7 +235,7 @@ const CompanyForm = (props: Props) => {
                   type='number'
                   InputProps={{ inputProps: { min: 1, max: 31 } }}
                   variant='filled'
-                  label='Day'
+                  label='End of Tax Year (Day)'
                   fullWidth
                   {...register('year_end_day')}
                   error={!!errors.year_end_day}
