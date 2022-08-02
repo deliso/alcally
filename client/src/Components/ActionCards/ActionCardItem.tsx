@@ -36,7 +36,7 @@ const ActionCardItem = (props: Props) => {
   }, []);
   const card = (
     <div>
-      <CardContent>
+      <CardContent sx={{ paddingBottom: '0px' }}>
         <Typography
           variant='caption'
           color='text.secondary'

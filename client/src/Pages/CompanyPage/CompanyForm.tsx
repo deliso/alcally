@@ -189,7 +189,6 @@ const CompanyForm = (props: Props) => {
                     value={type}
                     label='Type'
                     onChange={handleType}
-                    sx={{ 'align-items': 'center' }}
                   >
                     <MenuItem value={'SA'}>Sociedad Anónima</MenuItem>
                     <MenuItem value={'SL'}>Sociedad Limitada</MenuItem>

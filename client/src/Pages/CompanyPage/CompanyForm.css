@@ -61,3 +61,8 @@ form {
   justify-content: space-between;
   width: 40vw;
 }
+
+MuiSelect-select-MuiInputBase-input-MuiFilledInput-input {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}

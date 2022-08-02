@@ -4,14 +4,22 @@ import { useLocation } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import ActionCardItem from '../../Components/ActionCards/ActionCardItem';
 import CompanyCard from '../../Components/CompanyCard/CompanyCard';
-import { Button, Grid, Stack } from '@mui/material';
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Grid,
+  LinearProgress,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import { useEffect, useState } from 'react';
 import DirectorCard from '../../Components/DirectorCards/DirectorCard';
 import { Link } from 'react-router-dom';
 import DirectorForm from './DirectorForm';
-import { SettingsSystemDaydreamTwoTone } from '@mui/icons-material';
 const { DateTime } = require('luxon');
 
 //create Type for location.state
@@ -154,7 +162,7 @@ const CompanyDashboard = (props: Props) => {
                 <div className='cards-container-border'>
                   <Box className='director-card-container'>
                     <div className='cards-container-header director-header'>
-                      <span>{mgmt}</span>
+                      <span className='mgmt-body'>{mgmt}</span>
 
                       <Button
                         className='add-director-button'
@@ -164,20 +172,37 @@ const CompanyDashboard = (props: Props) => {
                         ADD DIRECTOR
                       </Button>
                     </div>
-                    <Grid spacing={8} className='director-cards-container'>
-                      {directors.map((director: Director) => {
-                        console.log(director);
-                        return (
+                    {
+                      <Grid spacing={8} className='director-cards-container'>
+                        {directors.length ? (
+                          directors.map((director: Director) => {
+                            console.log(director);
+                            return (
+                              <Item>
+                                <DirectorCard
+                                  key={director.id}
+                                  director={director}
+                                  handleRemove={handleRemove}
+                                ></DirectorCard>
+                              </Item>
+                            );
+                          })
+                        ) : (
                           <Item>
-                            <DirectorCard
-                              key={director.id}
-                              director={director}
-                              handleRemove={handleRemove}
-                            ></DirectorCard>
+                            <Card
+                              className='action-card-item'
+                              variant='outlined'
+                            >
+                              <CardContent>
+                                <Typography variant='h6' component='div'>
+                                  No directors appointed
+                                </Typography>
+                              </CardContent>
+                            </Card>
                           </Item>
-                        );
-                      })}
-                    </Grid>
+                        )}
+                      </Grid>
+                    }
                   </Box>
                 </div>
                 <div className='cards-container-border'>

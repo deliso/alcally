@@ -58,3 +58,8 @@
   margin-top: 16px;
   width: fit-content;
 }
+
+.mgmt-body {
+  display: flex;
+  align-self: flex-start;
+}

@@ -77,7 +77,7 @@
 .app-name {
   position: absolute;
   top: 15%;
-  left: 20%;
+  left: 10%;
   font-size: 70px;
   font-weight: 700;
   color: #6363f7;
@@ -89,7 +89,7 @@
   text-align: left;
   position: absolute;
   top: 25%;
-  left: 20%;
+  left: 10%;
   font-size: 25px;
   font-weight: 400;
   color: #2c2094;

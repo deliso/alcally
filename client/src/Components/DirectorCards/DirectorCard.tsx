@@ -19,6 +19,7 @@ const DirectorCard = (props: Props) => {
   const handleRemove = props.handleRemove;
   const [progress, setProgress] = useState<number>(100);
   const [days, setDays] = useState<number>(0);
+  const [expired, setExpired] = useState<boolean>(false);
 
   const dt = DateTime;
   // const action: Action = props.action;
@@ -34,9 +35,12 @@ const DirectorCard = (props: Props) => {
           .toUnixInteger() - dt.now().toUnixInteger();
       const remainingDays = Math.floor(remainingTime / 86400);
       setDays(remainingDays);
-      if (remainingTime < 31536000) {
+      if (remainingTime < 31536000 && remainingTime > 0) {
         const progressOutput = (remainingDays / 100) * 10;
         setProgress(progressOutput);
+      } else if (remainingTime < 0) {
+        setExpired(true);
+        setProgress(0);
       }
     }
   }, []);
@@ -56,10 +60,10 @@ const DirectorCard = (props: Props) => {
         </Typography>
         <Typography
           variant='overline'
-          color='text.secondary'
+          color={expired ? 'warning' : 'text.secondary'}
           className='due-date'
         >
-          Expires in {days} days
+          {expired ? 'Expired' : `Expires in ${days} days`}
         </Typography>
         <LinearProgress variant='determinate' value={progress} />
       </CardContent>

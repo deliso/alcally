@@ -211,7 +211,7 @@ const DirectorForm = (props: Props) => {
                   value={role}
                   label='Role'
                   onChange={handleRole}
-                  sx={{ 'align-items': 'center' }}
+                  sx={{ paddingTop: '0px', paddingBottom: '8px' }}
                 >
                   <MenuItem value={'DIRECTOR'}>Director</MenuItem>
                   <MenuItem value={'CHAIRMAN'}>Chairman</MenuItem>
@@ -323,6 +323,7 @@ const DirectorForm = (props: Props) => {
                   onClick={() => setShowForm(false)}
                   size='small'
                   variant='outlined'
+                  sx={{ borderColor: '#6363f7', color: '#6363f7' }}
                   startIcon={<ArrowBack />}
                 >
                   Cancel
@@ -331,6 +332,7 @@ const DirectorForm = (props: Props) => {
                   type='submit'
                   size='small'
                   variant='contained'
+                  sx={{ backgroundColor: '#6363f7' }}
                   endIcon={<Send />}
                 >
                   Submit

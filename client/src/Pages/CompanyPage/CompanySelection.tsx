@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Select from '@mui/material/Select';
 import { Container } from '@mui/system';
 import { Avatar } from '@mui/material';
@@ -19,7 +19,7 @@ export const CompanySelection = (props: Props) => {
   //apiService + .env file
   const baseUrl = 'http://localhost:3001/';
   const [companies, setCompanies] = useState<Company[]>([]);
-  const [selectedCompany, setSelectedCompany] = useState<Company | null>();
+  const [selectedCompany, setSelectedCompany] = useState({});
   const [create, setCreate] = useState<boolean>(false);
   const [showWelcome, setShowWelcome] = useState<boolean>(true);
   // const [completed, setCompleted] = useState<boolean>(false);
@@ -27,15 +27,20 @@ export const CompanySelection = (props: Props) => {
   //   company: selectedCompany,
   //   setCompleted: setCompleted,
   // };
+  const navigate = useNavigate();
   const handleChange = (e: any) => {
     if (e.target.value === 'create') {
       setCreate(true);
     }
-    const selectedCompany: Company[] = companies.filter(
+    const selection = companies.filter(
       (company) => company.id === e.target.value
-    );
-    setSelectedCompany(selectedCompany[0]);
+    ) as Company[];
+    setSelectedCompany({ ...selection[0] });
+
     setShowWelcome(false);
+    navigate(`/company/#${selection[0].id}`, {
+      state: { company: selection[0] },
+    });
   };
   const location = useLocation();
   useEffect(() => {
@@ -54,7 +59,7 @@ export const CompanySelection = (props: Props) => {
         <div className='navbar'>
           <Link to={`/`}>
             <div className='navbar-item logo'>
-              <img src={require('./../../Assets/logo.png')} alt='logo'></img>
+              <img src={require('./../../Assets/logo3.png')} alt='logo'></img>
             </div>
           </Link>
           <Box className='selector' sx={{ width: 284 }}>
@@ -103,15 +108,8 @@ export const CompanySelection = (props: Props) => {
                   if (company.name === 'ROMEL') console.log('company', company);
                   return (
                     <MenuItem key={company.name} value={company.id}>
-                      <CompanyContext.Provider value={selectedCompany}>
-                        <Link
-                          to={`/company/#${company.id}`}
-                          state={{ company: company }}
-                        >
-                          {company.name}, {company.type}
-                          {company.sole ? 'U' : ''}
-                        </Link>
-                      </CompanyContext.Provider>
+                      {company.name}, {company.type}
+                      {company.sole ? 'U' : ''}
                     </MenuItem>
                   );
                 })}

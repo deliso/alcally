@@ -35,7 +35,7 @@ export const LandingPage = (props: Props) => {
           className='logo-button navbar-item logo'
           onClick={handleHome}
         >
-          <img src={require('./../../Assets/logo.png')} alt='logo'></img>
+          <img src={require('./../../Assets/logo3.png')} alt='logo'></img>
         </button>
 
         {isLoggedIn ? (
@@ -67,6 +67,11 @@ export const LandingPage = (props: Props) => {
               className='background-image'
               src='https://images.blush.design/A0lZAnpSJ42xF4cfTc1z?w=original&cs=srgb'
               alt='background'
+            ></img>
+            <img
+              className='person-image'
+              src='https://images.blush.design/f30508bc8fe32d732eabffdd23d7e835?w=original&cs=srgb'
+              alt='person'
             ></img>
           </div>
         ) : (
