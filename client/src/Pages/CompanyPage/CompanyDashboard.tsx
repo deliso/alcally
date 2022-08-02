@@ -14,9 +14,11 @@ import DirectorForm from './DirectorForm';
 import { SettingsSystemDaydreamTwoTone } from '@mui/icons-material';
 const { DateTime } = require('luxon');
 
+//create Type for location.state
 type Props = {};
 
 const CompanyDashboard = (props: Props) => {
+  //apiService
   const baseUrl = 'http://localhost:3001/';
   const location = useLocation();
   // const [company, setCompany] = useState<Company>();
@@ -49,7 +51,7 @@ const CompanyDashboard = (props: Props) => {
     });
     return filterActions(actions);
   };
-
+  //switch-case
   const parseMgmt = (body: string) => {
     if (body === 'BOD') {
       return 'BOARD OF DIRECTORS';
@@ -69,6 +71,8 @@ const CompanyDashboard = (props: Props) => {
 
   useEffect(() => {
     const getCompanyById: () => Promise<void> = async () => {
+      //apiService
+      //add try/catch to async await in apiService + add alert for error
       const companyById = await fetch(`${baseUrl}company/${company.id}`);
       const jsonCompanyById = await companyById.json();
       const finalActions: Action[] = sortActions([...jsonCompanyById.actions]);

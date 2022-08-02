@@ -7,6 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import CompanyDashboard from './Pages/CompanyPage/CompanyDashboard';
 import CompanyForm from './Pages/CompanyPage/CompanyForm';
 import DirectorForm from './Pages/CompanyPage/DirectorForm';
+import LoginForm from './Pages/LoginPage/LoginForm';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

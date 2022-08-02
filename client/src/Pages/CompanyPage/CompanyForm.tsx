@@ -43,7 +43,7 @@ const theme = createTheme({
     },
   },
 });
-
+//import from utils
 const CompanySchema = yup.object().shape({
   name: yup.string().required('Name is required'),
   type: yup.string().required('Type is required'),
@@ -76,7 +76,7 @@ const CompanySchema = yup.object().shape({
   mgmt_rem: yup.boolean().required(),
   mgmt_num: yup.number().required(),
 });
-
+//replace by type
 interface ICompanyForm {
   name: string;
   type: string;

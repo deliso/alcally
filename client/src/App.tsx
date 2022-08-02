@@ -1,8 +1,13 @@
 import { CompanySelection } from './Pages/CompanyPage/CompanySelection';
 import './App.css';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useState } from 'react';
+import LandingPage from './Pages/LandingPage/LandingPage';
 
 function App() {
+  const [user, setUser] = useState({});
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  //utils file and import
   let theme = createTheme({
     palette: {
       primary: {
@@ -44,7 +49,14 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <div className='App'>
-        <CompanySelection></CompanySelection>
+        {isLoggedIn ? (
+          <CompanySelection></CompanySelection>
+        ) : (
+          <LandingPage
+            isLoggedIn={isLoggedIn}
+            setIsLoggedIn={setIsLoggedIn}
+          ></LandingPage>
+        )}
       </div>
     </ThemeProvider>
   );

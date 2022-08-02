@@ -19,12 +19,21 @@
   font-style: normal;
   src: url('../../Assets/Roboto/Roboto-Regular.ttf') format('opentype');
 }
+@font-face {
+  font-family: 'Roboto';
+  font-weight: 900;
+  font-style: bold;
+  src: url('../../Assets/Roboto/Roboto-Regular.ttf') format('opentype');
+}
+
+.app-container {
+  height: 100vh;
+}
 
 .company-selection {
   display: flex;
   height: 100vh;
   flex-direction: column;
-  padding: 8px;
   background-color: rgba(0, 0, 0, 0);
   background-size: 40%;
   background-repeat: no-repeat;
@@ -89,22 +98,25 @@ a {
 } */
 .app-name {
   position: absolute;
-  top: 20%;
-  left: 40%;
-  font-size: 90px;
-  font-weight: 700;
+  top: 15%;
+  left: 10%;
+  font-size: 70px;
+  font-weight: bolder;
   color: #6363f7;
-  font-family: PlayfairDisplay;
+  font-family: Roboto;
+  letter-spacing: 0.1px;
 }
 .app-text {
-  width: 60vw;
+  width: 30vw;
+  text-align: left;
   position: absolute;
-  top: 40%;
-  left: 22%;
-  font-size: 40px;
-  font-weight: 600;
+  top: 25%;
+  left: 10%;
+  font-size: 25px;
+  font-weight: 400;
   color: #2c2094;
-  font-family: PlayfairDisplay;
+  font-family: Roboto;
+  letter-spacing: 1.5px;
 }
 .logo-text,
 .user-text {
@@ -129,9 +141,9 @@ img {
 
 .background-image {
   position: absolute;
-  left: 25%;
-  width: 50vw;
-  height: 50vh;
+  right: 5%;
+  width: 40vw;
+  height: 40vh;
   bottom: 0%;
   z-index: 10;
 }
