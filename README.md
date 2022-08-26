@@ -28,7 +28,9 @@ Based on the details of a given company initially provided by the user, Alcally 
 npm i
 ```
 
-1. Setup server:
+1. Generate .env files based on the example.env files provided
+
+2. Setup server:
 
 ```sh
 cd server
@@ -37,7 +39,7 @@ npx tsc --watch
 npx nodemon dist/server/index.js
 ```
 
-2. Setup client:
+3. Setup client:
 
 ```sh
 cd client
@@ -45,6 +47,3 @@ npm i
 npm start
 ```
 
-PowerShell (Windows):
-
-Pending
