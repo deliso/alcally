@@ -6,9 +6,9 @@ Alcally is a modern task management tool for legal corporate obligations.
 
 Based on the details of a given company initially provided by the user, Alcally automatically generates a list of the legally required actions to be performed by the management of the company (e.g. submit annual accounts, renew members of the board, etc.). The app also features a dashboard showing upcoming actions, overview of the current board members and other relevant details of the company.
 
-<img src="./alcally-screenshot-1.png" width="400" height="220" alt="alcally-screenshot-1" />
-<img src="./alcally-screenshot-2.png" width="400" height="220" alt="alcally-screenshot-2" />
-<img src="./alcally-screenshot-3.png" width="400" height="220" alt="alcally-screenshot-3" />
+<img src="./assets/alcally-screenshot-1.png" width="400" height="220" alt="alcally-screenshot-1" />
+<img src="./assets/alcally-screenshot-2.png" width="400" height="220" alt="alcally-screenshot-2" />
+<img src="./assets/alcally-screenshot-3.png" width="400" height="220" alt="alcally-screenshot-3" />
 
 ### Tech stack
 
