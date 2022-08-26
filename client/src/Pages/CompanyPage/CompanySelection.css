@@ -1,7 +1,43 @@
+@font-face {
+  font-family: 'Playfair_Display';
+  font-weight: 600;
+  font-style: normal;
+  src: url('../../Assets/Playfair_Display/PlayfairDisplay-VariableFont_wght.ttf')
+    format('opentype');
+}
+
+@font-face {
+  font-family: 'Playfair_Display';
+  font-weight: 700;
+  font-style: normal;
+  src: url('../../Assets/Playfair_Display/PlayfairDisplay-VariableFont_wght.ttf')
+    format('opentype');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-weight: 400;
+  font-style: normal;
+  src: url('../../Assets/Roboto/Roboto-Regular.ttf') format('opentype');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-weight: 900;
+  font-style: bold;
+  src: url('../../Assets/Roboto/Roboto-Regular.ttf') format('opentype');
+}
+
+.app-container {
+  height: 100vh;
+}
+
 .company-selection {
   display: flex;
+  height: 100vh;
   flex-direction: column;
-  padding: 8px;
+  background-color: rgba(0, 0, 0, 0);
+  background-size: 40%;
+  background-repeat: no-repeat;
+  background-position: center bottom;
 }
 
 #company-select {
@@ -10,12 +46,19 @@
 }
 
 .selector {
-  width: 30vw;
+  display: flex;
+  align-items: center;
+  width: 40vw;
+  gap: 16px;
 }
 
 a {
   color: black;
   text-decoration: none;
+}
+
+.company-select-label {
+  font-family: Roboto;
 }
 
 .MuiInputLabel-outlined {
@@ -28,8 +71,88 @@ a {
   justify-content: space-between;
 }
 .navbar-item {
-  width: 10vw;
+  width: 15vw;
   display: flex;
   align-items: center;
   gap: 16px;
+  padding: 8px;
+}
+.user {
+  width: 15vw;
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+/* .main-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+  top: 20%;
+  left: 43%;
+  font-size: 70px;
+  font-weight: 700;
+  color: #2c2094;
+  font-family: PlayfairDisplay;
+} */
+.app-name {
+  position: absolute;
+  top: 15%;
+  left: 10%;
+  font-size: 70px;
+  font-weight: bolder;
+  color: #6363f7;
+  font-family: Roboto;
+  letter-spacing: 0.1px;
+}
+.app-text {
+  width: 30vw;
+  text-align: left;
+  position: absolute;
+  top: 25%;
+  left: 10%;
+  font-size: 25px;
+  font-weight: 400;
+  color: #2c2094;
+  font-family: Roboto;
+  letter-spacing: 1.5px;
+}
+.logo-text,
+.user-text {
+  font-size: 24px;
+  font-weight: 600;
+  color: #6363f7;
+  font-family: PlayfairDisplay;
+}
+
+img {
+  width: 48px;
+  height: 48px;
+}
+.user-avatar {
+  width: 36px;
+  height: 42px;
+}
+.company-logo {
+  width: 38px;
+  height: 38px;
+}
+
+.background-image {
+  position: absolute;
+  right: 5%;
+  width: 40vw;
+  height: 40vh;
+  bottom: 0%;
+  z-index: 10;
+}
+.background-image-blur {
+  position: absolute;
+  left: 25%;
+  width: 50vw;
+  height: 50vh;
+  bottom: 0%;
+  filter: blur(35px);
+  z-index: 10;
 }

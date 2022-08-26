@@ -5,34 +5,48 @@ import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Select from '@mui/material/Select';
 import { Container } from '@mui/system';
-
-export const CompanyContext = createContext<any>({});
+import { Avatar } from '@mui/material';
+import ApartmentIcon from '@mui/icons-material/Apartment';
+import { Person, PersonPinCircleRounded } from '@mui/icons-material';
 
 type Props = {};
 export const CompanySelection = (props: Props) => {
+  //apiService + .env file
   const baseUrl = 'http://localhost:3001/';
   const [companies, setCompanies] = useState<Company[]>([]);
-  const [selectedCompany, setSelectedCompany] = useState<Company | null>();
+  const [userDetails, setUserDetails] = useState<any>({});
+  const [selectedCompany, setSelectedCompany] = useState({});
   const [create, setCreate] = useState<boolean>(false);
+  const [showWelcome, setShowWelcome] = useState<boolean>(true);
   // const [completed, setCompleted] = useState<boolean>(false);
   // const locationState = {
   //   company: selectedCompany,
   //   setCompleted: setCompleted,
   // };
+  const navigate = useNavigate();
   const handleChange = (e: any) => {
     if (e.target.value === 'create') {
       setCreate(true);
     }
-    const selectedCompany: Company[] = companies.filter(
+    const selection = companies.filter(
       (company) => company.id === e.target.value
-    );
-    setSelectedCompany(selectedCompany[0]);
+    ) as Company[];
+    setSelectedCompany({ ...selection[0] });
+
+    setShowWelcome(false);
+    navigate(`/company/#${selection[0].id}`, {
+      state: { company: selection[0] },
+    });
   };
   const location = useLocation();
   useEffect(() => {
+    console.log('click');
+    const userInfo: any = localStorage.getItem('userData');
+    const jsonUser: any = JSON.parse(userInfo);
+    setUserDetails({ ...jsonUser });
     const getCompanies: () => Promise<void> = async () => {
       const companyData = await fetch(`${baseUrl}company`);
       const jsonCompanyData = await companyData.json();
@@ -43,83 +57,21 @@ export const CompanySelection = (props: Props) => {
   }, []);
 
   return (
-    <div className='company-selection'>
-      <CompanyContext.Provider value={selectedCompany}>
+    <div className='app-container'>
+      <div className='company-selection'>
         <div className='navbar'>
-          <div className='navbar-item logo'>
-            <svg
-              width='38'
-              height='38'
-              viewBox='0 0 38 38'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <g filter='url(#filter0_d_155_2647)'>
-                <circle cx='19' cy='18' r='18' fill='#115D5E' />
-              </g>
-              <path
-                d='M26.2371 24.0122L18.688 12.8202'
-                stroke='white'
-                stroke-width='2.25'
-              />
-              <path
-                d='M18.885 12.6205L11.3359 23.8126'
-                stroke='white'
-                stroke-width='2.25'
-              />
-              <path
-                d='M14.2221 26.6114C14.2221 26.6114 9.821 24.5586 8.12509 20.8056'
-                stroke='white'
-                stroke-width='2.25'
-                stroke-linejoin='round'
-              />
-              <path
-                d='M29.7099 21.8838C29.7099 21.8838 26.6534 25.6576 22.6015 26.3952'
-                stroke='white'
-                stroke-width='2.25'
-              />
-              <circle cx='19.0256' cy='12.75' r='4.5' fill='white' />
-              <defs>
-                <filter
-                  id='filter0_d_155_2647'
-                  x='0.25'
-                  y='0'
-                  width='37.5'
-                  height='37.5'
-                  filterUnits='userSpaceOnUse'
-                  color-interpolation-filters='sRGB'
-                >
-                  <feFlood flood-opacity='0' result='BackgroundImageFix' />
-                  <feColorMatrix
-                    in='SourceAlpha'
-                    type='matrix'
-                    values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0'
-                    result='hardAlpha'
-                  />
-                  <feOffset dy='0.75' />
-                  <feGaussianBlur stdDeviation='0.375' />
-                  <feComposite in2='hardAlpha' operator='out' />
-                  <feColorMatrix
-                    type='matrix'
-                    values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'
-                  />
-                  <feBlend
-                    mode='normal'
-                    in2='BackgroundImageFix'
-                    result='effect1_dropShadow_155_2647'
-                  />
-                  <feBlend
-                    mode='normal'
-                    in='SourceGraphic'
-                    in2='effect1_dropShadow_155_2647'
-                    result='shape'
-                  />
-                </filter>
-              </defs>
-            </svg>
-            <span>ALCALLY</span>
-          </div>
-          <Box className='selector' sx={{ width: 248 }}>
+          <Link to={`/`}>
+            <div className='navbar-item logo'>
+              <img src={require('./../../Assets/logo3.png')} alt='logo'></img>
+            </div>
+          </Link>
+          <Box className='selector' sx={{ width: 284 }}>
+            {' '}
+            <img
+              className='company-logo'
+              src='https://images.blush.design/mDnbV7zwvAFvfp85E0QG?w=original&cs=srgb'
+              alt='company-logo'
+            ></img>
             <FormControl
               fullWidth
               sx={{
@@ -144,6 +96,7 @@ export const CompanySelection = (props: Props) => {
               }}
             >
               <InputLabel id='company-select-label'>Select company</InputLabel>
+              {/* Outsource */}
               <Select
                 labelId='company-select-label'
                 id='company-select'
@@ -158,14 +111,8 @@ export const CompanySelection = (props: Props) => {
                   if (company.name === 'ROMEL') console.log('company', company);
                   return (
                     <MenuItem key={company.name} value={company.id}>
-                      <CompanyContext.Provider value={selectedCompany}>
-                        <Link
-                          to={`/company/#${company.id}`}
-                          state={{ company: company }}
-                        >
-                          {company.name}, {company.type},{' '}
-                        </Link>
-                      </CompanyContext.Provider>
+                      {company.name}, {company.type}
+                      {company.sole ? 'U' : ''}
                     </MenuItem>
                   );
                 })}
@@ -175,10 +122,15 @@ export const CompanySelection = (props: Props) => {
               </Select>
             </FormControl>
           </Box>
-          <div className='navbar-item user'>Sergio Morales</div>
+
+          <div className='navbar-item user'>
+            <Avatar variant='circular' sx={{ bgcolor: '#6363f7' }}>
+              <img src={userDetails.photoURL} alt='' />
+            </Avatar>
+          </div>
         </div>
         <Outlet />
-      </CompanyContext.Provider>
+      </div>
     </div>
   );
 };

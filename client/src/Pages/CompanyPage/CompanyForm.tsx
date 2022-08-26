@@ -1,6 +1,7 @@
 import './CompanyForm.css';
 import {
   ArrowBack,
+  ArrowForward,
   Send,
   SystemSecurityUpdateSharp,
 } from '@mui/icons-material';
@@ -10,13 +11,16 @@ import {
   Container,
   FormControl,
   FormControlLabel,
-  InputLabel,
   MenuItem,
+  InputLabel,
   Radio,
   RadioGroup,
   Select,
   Switch,
   TextField,
+  withStyles,
+  createTheme,
+  ThemeProvider,
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -28,6 +32,18 @@ import { Link } from 'react-router-dom';
 
 type Props = {};
 
+const theme = createTheme({
+  components: {
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          'align-items': 'center',
+        },
+      },
+    },
+  },
+});
+//import from utils
 const CompanySchema = yup.object().shape({
   name: yup.string().required('Name is required'),
   type: yup.string().required('Type is required'),
@@ -58,8 +74,9 @@ const CompanySchema = yup.object().shape({
   audit: yup.boolean().required(),
   mgmt: yup.string().required('Management type is required'),
   mgmt_rem: yup.boolean().required(),
+  mgmt_num: yup.number().required(),
 });
-
+//replace by type
 interface ICompanyForm {
   name: string;
   type: string;
@@ -71,6 +88,7 @@ interface ICompanyForm {
   audit: number;
   mgmt: number;
   mgmt_rem: boolean;
+  mgmt_num: number;
 }
 
 // id: string;
@@ -105,6 +123,7 @@ const CompanyForm = (props: Props) => {
         const inputCompany: Company = {
           ...data,
           actions: [],
+          directors: [],
           id: '',
         };
         console.log(inputCompany);
@@ -145,159 +164,171 @@ const CompanyForm = (props: Props) => {
   };
   return (
     <div>
-      <Container>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Box mb={2}>
-            {/* 'NAME' */}
-            <TextField
-              variant='filled'
-              label='Name'
-              fullWidth
-              autoFocus
-              {...register('name')}
-              error={!!errors.name}
-              helperText={errors?.name && errors.name.message}
-            />
-            {/* 'TYPE' */}
-            <FormControl fullWidth {...register('type')}>
-              <InputLabel id='type'>Type</InputLabel>
-              <Select
-                variant='filled'
-                labelId='type'
-                id='type'
-                value={type}
-                label='Type'
-                onChange={handleType}
-              >
-                <MenuItem value={'SA'}>Sociedad Anónima</MenuItem>
-                <MenuItem value={'SL'}>Sociedad Limitada</MenuItem>
-              </Select>
-            </FormControl>
-            {/* <RadioGroup
-              {...register('type')}
-              onChange={(e) => setType(e.target.value)}
-              value={type}
-            >
-              <FormControlLabel
-                value='SA'
-                control={<Radio />}
-                label='Sociedad Anónima'
-              />
-              <FormControlLabel
-                value='SL'
-                control={<Radio />}
-                label='Sociedad Limitada'
-              />
-            </RadioGroup> */}
-            {/* 'NIF' */}
-            <TextField
-              variant='filled'
-              label='NIF'
-              fullWidth
-              {...register('nif')}
-              error={!!errors.nif}
-              helperText={errors?.nif && errors.nif.message}
-            />
-            {/* 'CNAE' */}
-            <TextField
-              variant='filled'
-              label='CNAE'
-              fullWidth
-              {...register('cnae')}
-              error={!!errors.cnae}
-              helperText={errors?.cnae && errors.cnae.message}
-            />
+      <ThemeProvider theme={theme}>
+        <Container>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Box mb={2} className='form-container'>
+              <div className='form-row'>
+                {/* 'NAME' */}
+                <TextField
+                  variant='filled'
+                  label='Name'
+                  fullWidth
+                  autoFocus
+                  {...register('name')}
+                  error={!!errors.name}
+                  helperText={errors?.name && errors.name.message}
+                />
+                {/* 'TYPE' */}
+                <FormControl fullWidth {...register('type')}>
+                  {/* <InputLabel id='type'>Type</InputLabel> */}
+                  <Select
+                    variant='filled'
+                    labelId='type'
+                    id='type'
+                    value={type}
+                    label='Type'
+                    onChange={handleType}
+                  >
+                    <MenuItem value={'SA'}>Sociedad Anónima</MenuItem>
+                    <MenuItem value={'SL'}>Sociedad Limitada</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+              <div className='form-row'>
+                {/* 'NIF' */}
+                <TextField
+                  variant='filled'
+                  label='NIF'
+                  fullWidth
+                  {...register('nif')}
+                  error={!!errors.nif}
+                  helperText={errors?.nif && errors.nif.message}
+                />
+                {/* 'CNAE' */}
+                <TextField
+                  variant='filled'
+                  label='CNAE'
+                  fullWidth
+                  {...register('cnae')}
+                  error={!!errors.cnae}
+                  helperText={errors?.cnae && errors.cnae.message}
+                />
+              </div>
 
-            {/* 'YEAR-END-MONTH' */}
-            <TextField
-              type='number'
-              InputProps={{ inputProps: { min: 1, max: 12 } }}
-              variant='filled'
-              label='Month'
-              fullWidth
-              {...register('year_end_month')}
-              error={!!errors.year_end_month}
-              helperText={
-                errors?.year_end_month && errors.year_end_month.message
-              }
-            />
-            {/* 'YEAR-END-DAY' */}
-            <TextField
-              type='number'
-              InputProps={{ inputProps: { min: 1, max: 31 } }}
-              variant='filled'
-              label='Day'
-              fullWidth
-              {...register('year_end_day')}
-              error={!!errors.year_end_day}
-              helperText={errors?.year_end_day && errors.year_end_day.message}
-            />
-            {/* 'MGMT' */}
-            <FormControl fullWidth {...register('mgmt')}>
-              <InputLabel id='mgmt'>Management Body</InputLabel>
-              <Select
-                variant='filled'
-                labelId='demo-simple-select-label'
-                id='demo-simple-select'
-                value={mgmt}
-                label='mgmt'
-                onChange={handleMgmt}
-              >
-                <MenuItem value={'BOD'}>Board of Directors</MenuItem>
-                <MenuItem value={'J_D'}>Joint Director</MenuItem>
-                <MenuItem value={'J_S_D'}>Joint and Several Director</MenuItem>
-                <MenuItem value={'S_D'}>Sole Director</MenuItem>
-              </Select>
-            </FormControl>
-            {/* 'SOLE' */}
-            <div className='switch'>
-              <FormControlLabel
-                id='sole'
-                label='Is the Company owned by a sole shareholder?'
-                labelPlacement='start'
-                control={<Switch {...register('sole')} size='medium' />}
-                sx={{ 'margin-left': '0px' }}
-              />
-            </div>
-            {/* 'AUDIT' */}
-            <div className='switch'>
-              <FormControlLabel
-                id='audit'
-                label='Does the company audit its annual accounts?'
-                labelPlacement='start'
-                control={<Switch {...register('audit')} size='medium' />}
-                sx={{ 'margin-left': '0px' }}
-              />
-            </div>
-            {/* 'MGMT_REM' */}
-            <div className='switch'>
-              <FormControlLabel
-                id='mgmt_rem'
-                label='Do the director/s receive remuneration?'
-                labelPlacement='start'
-                control={<Switch {...register('mgmt_rem')} size='medium' />}
-                sx={{ 'margin-left': '0px' }}
-              />
-            </div>
-            <Button
-              onClick={() => {}}
-              size='small'
-              variant='outlined'
-              startIcon={<ArrowBack />}
-            >
-              <Link to={'/'}>Cancel</Link>
-            </Button>
-            <Button
-              type='submit'
-              size='small'
-              variant='contained'
-              endIcon={<Send />}
-            >
-              Submit
-            </Button>
-          </Box>
-        </form>
-      </Container>
+              <div className='form-row'>
+                {/* 'YEAR-END-MONTH' */}
+                <TextField
+                  type='number'
+                  InputProps={{ inputProps: { min: 1, max: 12 } }}
+                  variant='filled'
+                  label='End of Tax Year (Month)'
+                  fullWidth
+                  {...register('year_end_month')}
+                  error={!!errors.year_end_month}
+                  helperText={
+                    errors?.year_end_month && errors.year_end_month.message
+                  }
+                />
+                {/* 'YEAR-END-DAY' */}
+                <TextField
+                  type='number'
+                  InputProps={{ inputProps: { min: 1, max: 31 } }}
+                  variant='filled'
+                  label='End of Tax Year (Day)'
+                  fullWidth
+                  {...register('year_end_day')}
+                  error={!!errors.year_end_day}
+                  helperText={
+                    errors?.year_end_day && errors.year_end_day.message
+                  }
+                />
+              </div>
+              <div className='form-row'>
+                {/* 'MGMT' */}
+                <FormControl fullWidth {...register('mgmt')}>
+                  {/* <InputLabel id='mgmt'>Management Body</InputLabel> */}
+                  <Select
+                    variant='filled'
+                    labelId='demo-simple-select-label'
+                    id='demo-simple-select'
+                    value={mgmt}
+                    label='mgmt'
+                    onChange={handleMgmt}
+                  >
+                    <MenuItem value={'BOD'}>Board of Directors</MenuItem>
+                    <MenuItem value={'J_D'}>Joint Director</MenuItem>
+                    <MenuItem value={'J_S_D'}>
+                      Joint and Several Director
+                    </MenuItem>
+                    <MenuItem value={'S_D'}>Sole Director</MenuItem>
+                  </Select>
+                </FormControl>
+                {/* 'MGMT_NUM' */}
+                <TextField
+                  type='number'
+                  InputProps={{ inputProps: { min: 1, max: 10 } }}
+                  variant='filled'
+                  label='Number of Directors'
+                  fullWidth
+                  {...register('mgmt_num')}
+                  error={!!errors.mgmt_num}
+                  helperText={errors?.mgmt_num && errors.mgmt_num.message}
+                />
+              </div>
+              {/* 'SOLE' */}
+              <div className='switch'>
+                <FormControlLabel
+                  id='sole'
+                  label='Is the Company owned by a sole shareholder?'
+                  labelPlacement='start'
+                  control={<Switch {...register('sole')} size='medium' />}
+                  sx={{ 'margin-left': '0px' }}
+                />
+              </div>
+              {/* 'AUDIT' */}
+              <div className='switch'>
+                <FormControlLabel
+                  id='audit'
+                  label='Does the company audit its annual accounts?'
+                  labelPlacement='start'
+                  control={<Switch {...register('audit')} size='medium' />}
+                  sx={{ 'margin-left': '0px' }}
+                />
+              </div>
+              {/* 'MGMT_REM' */}
+              <div className='switch'>
+                <FormControlLabel
+                  id='mgmt_rem'
+                  label='Do the director/s receive remuneration?'
+                  labelPlacement='start'
+                  control={<Switch {...register('mgmt_rem')} size='medium' />}
+                  sx={{ 'margin-left': '0px' }}
+                />
+              </div>
+              <div className='button-row form-row'>
+                <Button
+                  onClick={() => {}}
+                  size='small'
+                  variant='outlined'
+                  color='primary'
+                  startIcon={<ArrowBack />}
+                >
+                  <Link to={'/'}>Cancel</Link>
+                </Button>
+                <Button
+                  type='submit'
+                  size='small'
+                  variant='outlined'
+                  endIcon={<ArrowForward />}
+                >
+                  Submit
+                </Button>
+              </div>
+            </Box>
+          </form>
+        </Container>
+      </ThemeProvider>
     </div>
   );
 };

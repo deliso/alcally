@@ -27,11 +27,13 @@ model Company {
   year_end_day    Int
   year_end_month    Int
   actions     Action[] 
+  directors   Director[]
   nif         String @unique
   cnae        Int
   sole        Boolean
   mgmt        Body
   mgmt_rem    Boolean
+  mgmt_num    Int
   // user      User @relation(fields: [userId], references: [id])
   // userId    Int @unique
   // incDate   DateTime
@@ -41,7 +43,6 @@ model Company {
   // postcode  Int
   // city      String
   // mgmt_no   Int
-  // persons   Person[]
 }
 
 model Action {
@@ -63,21 +64,27 @@ model Action {
   // comments  String
 }
 
-// model Person {
-//   id        Int      @id @default(autoincrement())
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-//   name      String
-//   visible   Boolean  @default(true)
-//   company   Company @relation(fields: [companyId], references: [id])
-//   companyId Int @unique
-//   due_date  DateTime
-//   title     String   @db.VarChar(255)
-//   body      Body
-//   category  Category
-//   frequency Frequency
-//   comments  String
-// }
+model Director {
+  id        String      @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  surname   String
+  role     Role
+  body      Body
+  active    Boolean
+  company   Company @relation(fields: [companyId], references: [id],onDelete: Cascade)
+  companyId   String
+  appointment_year      Int
+  appointment_month     Int
+  appointment_day       Int
+  expiry_year           Int
+  expiry_month          Int
+  expiry_day            Int
+  nif                   String @unique
+  dir_rem   Boolean
+  dir_indef   Boolean
+}
 
 enum Type {
   SA
@@ -108,9 +115,8 @@ enum Body {
   AU
 }
 
-// enum Role {
-//   CHAIRMAN
-//   MEMBER
-//   SECRETARY
-//   AUDITOR
-// }
+enum Role {
+  CHAIRMAN
+  DIRECTOR
+  SECRETARY
+}
