@@ -11,6 +11,7 @@ Based on the details of a given company initially provided by the user, Alcally 
 <img src="./client/src/Assets/alcally-screenshot-3.png" width="400" height="220" alt="alcally-screenshot-3" />
 
 ### Tech stack
+
 <p align="left">
 <a href="https://www.typescriptlang.org/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/typescript-colored.svg" width="36" height="36" alt="TypeScript" /></a>
 <a href="https://reactjs.org/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/react-colored.svg" width="36" height="36" alt="React" /></a>
@@ -21,14 +22,17 @@ Based on the details of a given company initially provided by the user, Alcally 
 <a href="https://expressjs.com/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/express-colored.svg" width="36" height="36" alt="Express" /></a>
 </p>
 
+### Getting started:
 
-### Getting started (Mac, Linux):
+1. Generate .env files based on the .example.env files provided
+
+2. Install root folder dependencies
 
 ```sh
 npm i
 ```
 
-1. Setup server:
+3. Run server:
 
 ```sh
 cd server
@@ -37,16 +41,10 @@ npx tsc --watch
 npx nodemon dist/server/index.js
 ```
 
-2. Setup client:
+4. Run client:
 
 ```sh
 cd client
 npm i
 npm start
 ```
-
-PowerShell (Windows):
-
-Pending
-
-
