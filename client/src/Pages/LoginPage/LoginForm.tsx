@@ -7,9 +7,15 @@ import * as yup from 'yup';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import apiService from '../../apiService/login.apiService';
+import auth from '../../Utils/auth';
+
+const initialState = {
+  email: '',
+};
 
 type Props = {
-  setIsLoggedIn: any;
+  setIsAuthenticated: any;
 };
 
 const UserSchema = yup.object().shape({
@@ -27,46 +33,28 @@ interface IUser {
 // actions!: Action[];
 
 const LoginForm = (props: Props) => {
-  const setIsLoggedIn = props.setIsLoggedIn;
+  let navigate = useNavigate();
+  const [state, setState] = useState(initialState);
+  const setIsAuthenticated = props.setIsAuthenticated;
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm<IUser>({
     resolver: yupResolver(UserSchema),
   });
 
   const onSubmit = async (data: any) => {
-    setIsLoggedIn(true);
-    //   console.log(data);
-    //   const isValid = await DirectorSchema.isValid(data);
-    //   if (isValid) {
-    //     try {
-    //       const inputDirector: Director = {
-    //         ...data,
-    //         id: '',
-    //         active: true,
-    //         expiry_year: Number(data.expiry_year) || 2100,
-    //         expiry_month: Number(data.expiry_month) || 12,
-    //         expiry_day: Number(data.expiry_day) || 31,
-    //         body: body,
-    //       };
-    //       const responseDirector = await fetch(
-    //         `http://localhost:3001/director/${id}`,
-    //         {
-    //           method: 'POST',
-    //           headers: { 'Content-Type': 'application/json' },
-    //           body: JSON.stringify(inputDirector),
-    //         }
-    //       );
-    //       const jsonDirector = await responseDirector.json();
-    //       setDirectors([...directors, jsonDirector]);
-    //       setShowForm(false);
-    //     } catch (e) {
-    //       console.log(e);
-    //     }
-    //   }
+    const isValid = await UserSchema.isValid(data);
+    if (isValid) {
+      const res = await apiService.login(data);
+      if (res.error) {
+        alert(`${res.message}`);
+      } else {
+        setIsAuthenticated(true);
+        auth.login(() => {});
+      }
+    }
   };
   return (
     <div>
@@ -92,7 +80,7 @@ const LoginForm = (props: Props) => {
               error={!!errors.email}
               helperText={errors?.email && errors.email.message}
             />
-            {/* 'NIF' */}
+            {/* 'PASSWORD' */}
             <TextField
               variant='filled'
               label='Password'

@@ -12,13 +12,12 @@ import { Avatar } from '@mui/material';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import { Person, PersonPinCircleRounded } from '@mui/icons-material';
 
-export const CompanyContext = createContext<any>({});
-
 type Props = {};
 export const CompanySelection = (props: Props) => {
   //apiService + .env file
   const baseUrl = 'http://localhost:3001/';
   const [companies, setCompanies] = useState<Company[]>([]);
+  const [userDetails, setUserDetails] = useState<any>({});
   const [selectedCompany, setSelectedCompany] = useState({});
   const [create, setCreate] = useState<boolean>(false);
   const [showWelcome, setShowWelcome] = useState<boolean>(true);
@@ -44,6 +43,10 @@ export const CompanySelection = (props: Props) => {
   };
   const location = useLocation();
   useEffect(() => {
+    console.log('click');
+    const userInfo: any = localStorage.getItem('userData');
+    const jsonUser: any = JSON.parse(userInfo);
+    setUserDetails({ ...jsonUser });
     const getCompanies: () => Promise<void> = async () => {
       const companyData = await fetch(`${baseUrl}company`);
       const jsonCompanyData = await companyData.json();
@@ -122,7 +125,7 @@ export const CompanySelection = (props: Props) => {
 
           <div className='navbar-item user'>
             <Avatar variant='circular' sx={{ bgcolor: '#6363f7' }}>
-              <Person sx={{ bgcolor: '#6363f7' }} />
+              <img src={userDetails.photoURL} alt='' />
             </Avatar>
           </div>
         </div>

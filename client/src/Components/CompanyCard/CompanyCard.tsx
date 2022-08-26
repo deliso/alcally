@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useContext } from 'react';
 import { Company } from '../../../../types/types';
+import { parseMgmt } from '../../Pages/CompanyPage/CompanyDashboard';
 
 type Props = {
   company: Company;
@@ -14,6 +15,7 @@ type Props = {
 const CompanyCard = (props: Props) => {
   // const company = useContext(selectedCompany) as Company;
   const company = props.company;
+  const parsedBody = parseMgmt(company.mgmt);
   const card = (
     <>
       {company ? (
@@ -23,8 +25,8 @@ const CompanyCard = (props: Props) => {
               Name
             </Typography>
             <Typography variant='h6' component='div'>
-              {company.name},{company.type}
-              {company.sole ? 'U' : ''}
+              {company.name}, {company.type[0]}.{company.type[1]}.
+              {company.sole ? 'U.' : ''}
             </Typography>
             <Typography variant='caption' color='text.secondary' gutterBottom>
               NIF
@@ -37,6 +39,18 @@ const CompanyCard = (props: Props) => {
             </Typography>
             <Typography variant='h6' component='div'>
               {company.cnae}
+            </Typography>
+            <Typography variant='caption' color='text.secondary' gutterBottom>
+              MANAGEMENT BODY
+            </Typography>
+            <Typography variant='h6' component='div'>
+              {parsedBody}
+            </Typography>
+            <Typography variant='caption' color='text.secondary' gutterBottom>
+              NUMBER OF DIRECTORS
+            </Typography>
+            <Typography variant='h6' component='div'>
+              {company.mgmt_num}
             </Typography>
           </CardContent>
           <CardActions>
