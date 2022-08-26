@@ -22,15 +22,18 @@ Based on the details of a given company initially provided by the user, Alcally 
 <a href="https://expressjs.com/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/express-colored.svg" width="36" height="36" alt="Express" /></a>
 </p>
 
-### Getting started (Mac, Linux):
+
+### Getting started:
+
+1. Generate .env files based on the .example.env files provided
+
+2. Install root folder dependencies
 
 ```sh
 npm i
 ```
 
-1. Generate .env files based on the example.env files provided
-
-2. Setup server:
+3. Run server:
 
 ```sh
 cd server
@@ -38,8 +41,7 @@ npm i
 npx tsc --watch
 npx nodemon dist/server/index.js
 ```
-
-3. Setup client:
+4. Run client:
 
 ```sh
 cd client
