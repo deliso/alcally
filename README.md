@@ -2,11 +2,13 @@
 
 # Alcally
 
-Brief description (max 600 characters) and some screenshots.
+Alcally is a modern task management tool for legal corporate obligations.
 
-### Getting started
+Based on the details of a given company initially provided by the user, Alcally automatically generates a list of the legally required actions to be performed by the management of the company (e.g. submit annual accounts, renew members of the board, etc.). The app also features a dashboard showing upcoming actions, overview of the current board members and other relevant details of the company.
 
-Getting started, where you explain to someone who has never seen your project before how to install the required dependencies, set up the dev / production environment, and run it on their computer.
+<img src="./client/src/Assets/alcally-screenshot-1.png" width="400" height="220" alt="alcally-screenshot-1" />
+<img src="./client/src/Assets/alcally-screenshot-2.png" width="400" height="220" alt="alcally-screenshot-2" />
+<img src="./client/src/Assets/alcally-screenshot-3.png" width="400" height="220" alt="alcally-screenshot-3" />
 
 ### Tech stack
 <p align="left">
@@ -18,4 +20,33 @@ Getting started, where you explain to someone who has never seen your project be
 <a href="https://www.prisma.io/" target="_blank" rel="noreferrer"><img src="https://www.freelogovectors.net/wp-content/uploads/2022/01/prisma_logo-freelogovectors.net_.png" width="36" height="36" alt="Prisma" /></a>
 <a href="https://expressjs.com/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/express-colored.svg" width="36" height="36" alt="Express" /></a>
 </p>
+
+
+### Getting started (Mac, Linux):
+
+```sh
+npm i
+```
+
+1. Setup server:
+
+```sh
+cd server
+npm i
+npx tsc --watch
+npx nodemon dist/server/index.js
+```
+
+2. Setup client:
+
+```sh
+cd client
+npm i
+npm start
+```
+
+PowerShell (Windows):
+
+Pending
+
 
