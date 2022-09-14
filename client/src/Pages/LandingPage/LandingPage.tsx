@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import LoginForm from '../LoginPage/LoginForm';
 import { Person } from '@mui/icons-material';
 import { signInWithGoogle } from '../../Firebase';
+import { User } from '../../../../types/types';
 
 type Props = {
   isAuthenticated: boolean;
@@ -25,14 +26,14 @@ export const LandingPage = (props: Props) => {
     setLanding(true);
     navigate('/', { replace: true });
   };
-  const handleClick = () => {
-    console.log('click');
-    signInWithGoogle();
-    const newData: any = localStorage.getItem('userData');
-    const jsonData: any = JSON.parse(newData);
-    setUserData(jsonData);
-    console.log(jsonData);
-    setIsAuthenticated(true);
+  const handleClick = async () => {
+    const authorisedUser: User = await signInWithGoogle();
+    if (authorisedUser?.id) setIsAuthenticated(true);
+    // const newData: any = localStorage.getItem('userData');
+    // const jsonData: any = JSON.parse(newData);
+    // setUserData(jsonData);
+    // console.log(jsonData);
+    // setIsAuthenticated(true);
     // setLanding(false);
   };
   useEffect(() => {

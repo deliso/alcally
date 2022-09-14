@@ -45,16 +45,16 @@ const LoginForm = (props: Props) => {
   });
 
   const onSubmit = async (data: any) => {
-    const isValid = await UserSchema.isValid(data);
-    if (isValid) {
-      const res = await apiService.login(data);
-      if (res.error) {
-        alert(`${res.message}`);
-      } else {
-        setIsAuthenticated(true);
-        auth.login(() => {});
-      }
-    }
+    // const isValid = await UserSchema.isValid(data);
+    // if (isValid) {
+    //   const res = await apiService.login(data);
+    //   if (res.error) {
+    //     alert(`${res.message}`);
+    //   } else {
+    //     setIsAuthenticated(true);
+    //     auth.login(() => {});
+    //   }
+    // }
   };
   return (
     <div>

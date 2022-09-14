@@ -6,7 +6,8 @@ import * as bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 const signup = async (req: Request, res: Response) => {
-  const userData: User = req.body;
+  const userData: any = req.body;
+  delete userData.id;
   const user = await prisma.user.findUnique({
     where: {
       email: userData.email,
@@ -14,14 +15,18 @@ const signup = async (req: Request, res: Response) => {
   });
   if (user) {
     res.status(409).send({ error: 409, message: 'User already exists' });
+    return;
   }
-  if (userData.password === '') throw new Error();
-  const hash = await bcrypt.hash(userData.password, 10);
-  userData.password = hash;
+  if (userData.password?.length) {
+    const hash = await bcrypt.hash(userData.password, 10);
+    userData.password = hash;
+  }
   try {
-    const newUser = await prisma.user.create({
+    console.log('creating user');
+    userData.password = userData.uid;
+    const newUser = (await prisma.user.create({
       data: userData,
-    });
+    })) as User;
     res.status(201);
     res.send(newUser);
   } catch (error) {
@@ -36,6 +41,7 @@ const signup = async (req: Request, res: Response) => {
 // };
 
 const signin = async (req: Request, res: Response) => {
+  console.log('in');
   try {
     const user = await prisma.user.findUnique({
       where: {
