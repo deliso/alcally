@@ -20,23 +20,22 @@ const provider = new GoogleAuthProvider();
 
 export const signInWithGoogle = async () => {
   try {
+    const result = await signInWithPopup(auth, provider);
+    console.log(result);
     let email: string = '';
     let displayName: string = '';
     let photoURL: string = '';
-    const result = await signInWithPopup(auth, provider);
     const { uid, emailVerified } = result.user;
     if (result.user.email) email = result.user.email;
-    if (result.user.displayName) email = result.user.displayName;
-    if (result.user.photoURL) email = result.user.photoURL;
-    const userData: User = {
-      id: '',
-      password: '',
+    if (result.user.displayName) displayName = result.user.displayName;
+    if (result.user.photoURL) photoURL = result.user.photoURL;
+    const userData = {
       email,
       name: displayName,
       uid,
       photoUrl: photoURL,
       emailVerified,
-    };
+    } as User;
     const authRegisteredUser = await apiService.register(userData);
     if (authRegisteredUser.error === 409) {
       const authLoggedUser = await apiService.login(userData);

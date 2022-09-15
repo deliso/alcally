@@ -10,7 +10,7 @@ const signup = async (req: Request, res: Response) => {
   delete userData.id;
   const user = await prisma.user.findUnique({
     where: {
-      email: userData.email,
+      uid: userData.uid,
     },
   });
   if (user) {
