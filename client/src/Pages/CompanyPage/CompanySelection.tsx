@@ -43,7 +43,6 @@ export const CompanySelection = (props: Props) => {
   };
   const location = useLocation();
   useEffect(() => {
-    console.log('click');
     const userInfo: any = localStorage.getItem('userData');
     const jsonUser: any = JSON.parse(userInfo);
     setUserDetails({ ...jsonUser });

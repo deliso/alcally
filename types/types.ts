@@ -2,6 +2,11 @@ class User {
   id!: string;
   email!: string;
   password!: string;
+  name!: string;
+  uid!: string;
+  photoUrl!: string;
+  emailVerified!: boolean;
+  companies?: Company[];
 }
 
 type CompanyType = 'SA' | 'SL';

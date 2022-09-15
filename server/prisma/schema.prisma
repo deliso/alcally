@@ -13,10 +13,12 @@ datasource db {
 model User {
   id        String     @id @default(cuid()) 
   email     String     @unique
+  name      String
   password  String
-  // companies Company[]
-  // name      String
-  // surname   String
+  companies Company[]
+  uid       String    @unique
+	photoUrl  String?  
+	emailVerified Boolean
 }
 
 model Company {
@@ -34,8 +36,8 @@ model Company {
   mgmt        Body
   mgmt_rem    Boolean
   mgmt_num    Int
-  // user      User @relation(fields: [userId], references: [id])
-  // userId    Int @unique
+  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String @unique
   // incDate   DateTime
   // yearStart DateTime 
   // country   String
@@ -57,8 +59,8 @@ model Action {
   companyId     String
   completed     Boolean  @default(false)
   hidden        Boolean  @default(false)
-  category  Category
-  frequency Frequency
+  category      Category
+  frequency     Frequency
   // title     String   @db.VarChar(255)
   // body      Body
   // comments  String
